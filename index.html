@@ -3,744 +3,516 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SHEIN平台规则答题库</title>
+    <title>SHEIN履约规范答题库 (答案直显版)</title>
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
         body {
-            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
-            color: #333;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             line-height: 1.6;
+            background-color: #f4f7f9;
+            color: #333;
+            margin: 0;
             padding: 20px;
         }
         .container {
-            max-width: 1200px;
+            max-width: 900px;
             margin: 0 auto;
-            padding: 20px;
-        }
-        header {
-            text-align: center;
-            margin-bottom: 40px;
-            padding: 30px;
-            background: linear-gradient(120deg, #6a11cb 0%, #2575fc 100%);
-            color: white;
-            border-radius: 12px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+            background-color: #ffffff;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
         }
         h1 {
-            font-size: 2.8rem;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            text-align: center;
+            color: #d52b34;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 15px;
         }
-        .subtitle {
-            font-size: 1.3rem;
-            opacity: 0.9;
-            max-width: 800px;
-            margin: 0 auto;
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding: 15px;
+            background-color: #fdfdfe;
+            border-radius: 8px;
+            border: 1px solid #e0e6ed;
+            position: sticky;
+            top: 0;
+            z-index: 10;
         }
         .search-box {
-            display: flex;
-            justify-content: center;
-            margin: 30px 0;
-        }
-        #searchInput {
-            width: 70%;
-            padding: 14px 20px;
-            font-size: 1.1rem;
-            border: none;
-            border-radius: 50px 0 0 50px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            outline: none;
-        }
-        #searchButton {
-            padding: 14px 25px;
-            background: #ff6b6b;
-            color: white;
-            border: none;
-            border-radius: 0 50px 50px 0;
-            cursor: pointer;
-            font-size: 1.1rem;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-        #searchButton:hover {
-            background: #ff5252;
-            transform: translateY(-2px);
-        }
-        .filters {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
+            flex-grow: 1;
+            padding: 10px 15px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+            min-width: 200px;
         }
         .filter-btn {
-            padding: 12px 24px;
-            background: white;
-            border: 2px solid #4e54c8;
-            border-radius: 50px;
+            padding: 10px 20px;
+            border: 1px solid #d52b34;
+            background-color: #fff;
+            color: #d52b34;
             cursor: pointer;
-            font-weight: 600;
+            border-radius: 6px;
+            font-size: 15px;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.08);
         }
-        .filter-btn:hover, .filter-btn.active {
-            background: #4e54c8;
-            color: white;
-            transform: translateY(-3px);
+        .filter-btn:hover {
+            background-color: #d52b34;
+            color: #fff;
         }
-        .section {
-            background: white;
-            border-radius: 12px;
-            padding: 30px;
-            margin-bottom: 40px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-            transition: transform 0.3s ease;
+        .filter-btn.active {
+            background-color: #d52b34;
+            color: #fff;
+            font-weight: bold;
         }
-        .section:hover {
-            transform: translateY(-5px);
+        .qa-card {
+            background-color: #ffffff;
+            border: 1px solid #e0e6ed;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: box-shadow 0.3s ease;
         }
-        .section h2 {
-            font-size: 2rem;
-            margin-bottom: 25px;
-            color: #4e54c8;
-            padding-bottom: 15px;
-            border-bottom: 3px solid #f0f4f8;
-            display: flex;
-            align-items: center;
-        }
-        .section h2:before {
-            content: "";
-            display: inline-block;
-            width: 12px;
-            height: 35px;
-            background: #4e54c8;
-            border-radius: 4px;
-            margin-right: 15px;
-        }
-        .question {
-            margin-bottom: 30px;
-            padding: 25px;
-            background: #f9fbff;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            border-left: 4px solid #4e54c8;
+        .qa-card:hover {
+            box-shadow: 0 2px 10px rgba(0,0,0,0.07);
         }
         .question-header {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 15px;
             align-items: center;
+            margin-bottom: 15px;
         }
-        .question-text {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: #2d3748;
-            line-height: 1.5;
+        .question-title {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #1a202c;
+            flex-grow: 1;
+            margin: 0; /* Removed default margin from p tag */
         }
         .question-type {
-            background: #4e54c8;
-            color: white;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            font-weight: 600;
+            font-size: 0.8em;
+            background-color: #e2e8f0;
+            color: #4a5568;
+            padding: 3px 8px;
+            border-radius: 10px;
+            white-space: nowrap;
+            margin-left: 15px;
         }
-        .options {
-            margin: 20px 0;
-            padding-left: 20px;
+        .options ul {
+            list-style-type: none;
+            padding-left: 0;
+            margin: 0;
         }
-        .option {
-            margin-bottom: 12px;
-            padding: 12px 15px;
-            background: white;
-            border-radius: 8px;
-            border: 1px solid #e2e8f0;
-            transition: all 0.2s ease;
+        .options li {
+            padding: 8px 0;
+            border-bottom: 1px dashed #f0f0f0;
         }
-        .option:hover {
-            background: #f0f7ff;
-            border-color: #a3bffa;
+        .options li:last-child {
+            border-bottom: none;
         }
-        .answer {
-            background: #e6f7ee;
-            padding: 20px;
-            border-radius: 8px;
-            margin: 15px 0;
-            border-left: 4px solid #10b981;
+        .answer-section {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f7fafc;
+            border-radius: 6px;
+            border-left: 4px solid #48bb78;
         }
-        .answer-header {
-            font-weight: 700;
-            color: #10b981;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
+        .answer-section strong {
+            color: #2f855a;
         }
-        .answer-header i {
-            margin-right: 8px;
+        .answer-section .correct-answer {
+             font-weight: bold;
+             color: #d52b34;
         }
-        .explanation {
-            background: #ebf8ff;
-            padding: 20px;
-            border-radius: 8px;
-            margin-top: 15px;
-            border-left: 4px solid #3b82f6;
-        }
-        .explanation-header {
-            font-weight: 700;
-            color: #3b82f6;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-        }
-        .explanation-header i {
-            margin-right: 8px;
-        }
-        .no-results {
+        #counter {
             text-align: center;
-            padding: 40px;
-            background: white;
-            border-radius: 12px;
-            font-size: 1.2rem;
+            margin-bottom: 20px;
             color: #718096;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-        }
-        footer {
-            text-align: center;
-            padding: 30px;
-            margin-top: 40px;
-            color: #718096;
-            font-size: 0.9rem;
-            border-top: 1px solid #e2e8f0;
-        }
-        @media (max-width: 768px) {
-            .search-box {
-                flex-direction: column;
-                align-items: center;
-            }
-            #searchInput {
-                width: 100%;
-                border-radius: 50px;
-                margin-bottom: 15px;
-            }
-            #searchButton {
-                width: 50%;
-                border-radius: 50px;
-            }
-            .filters {
-                gap: 10px;
-            }
-            .filter-btn {
-                padding: 8px 16px;
-                font-size: 0.9rem;
-            }
-            .question {
-                padding: 15px;
-            }
+            font-style: italic;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>SHEIN平台规则答题库</h1>
-            <p class="subtitle">本答题库包含SHEIN平台订单处理、发货时效、违规处罚等重要规则，帮助您快速掌握平台政策要求</p>
-        </header>
-        
-        <div class="search-box">
-            <input type="text" id="searchInput" placeholder="搜索题目关键词...">
-            <button id="searchButton">搜索</button>
-        </div>
-        
-        <div class="filters">
-            <button class="filter-btn active" data-filter="all">全部题目</button>
-            <button class="filter-btn" data-filter="single">单选题</button>
-            <button class="filter-btn" data-filter="multi">多选题</button>
-            <button class="filter-btn" data-filter="judge">判断题</button>
-        </div>
-        
-        <div class="content">
-            <!-- 单选题 -->
-            <div class="section" data-type="single">
-                <h2>单选题</h2>
-                
-                <div class="question">
-                    <div class="question-header">
-                        <div class="question-text">若您有一笔订单，导出地址后在后台点击确认无货，关于以上情况，哪一项说法是正确的？</div>
-                        <div class="question-type">单选题</div>
-                    </div>
-                    <div class="options">
-                        <div class="option">A: 订单将被取消，并被视为卖家原因订单取消，扣2分</div>
-                        <div class="option">B: 订单将被取消，但并不会被视为卖家原因订单取消</div>
-                        <div class="option">C: 订单将被取消，并被视为卖家原因订单取消，处罚5美金</div>
-                        <div class="option">D: 订单将停留在待发货状态，直至商品补货到货</div>
-                    </div>
-                    <div class="answer">
-                        <div class="answer-header">✓ 标准答案</div>
-                        <div>C</div>
-                    </div>
-                    <div class="explanation">
-                        <div class="explanation-header">📚 答案解析</div>
-                        <div>无论订单处于何种处理状态，在后台点击确认无货后，订单都将被视作卖家原因取消订单，并面临每单5美金的处罚</div>
-                    </div>
-                </div>
-                
-                <div class="question">
-                    <div class="question-header">
-                        <div class="question-text">若您的店铺上周按时签收率为90%，这周您的一笔订单超过了平台的要求签收时间仍没有完成签收，关于以上情况，哪一项说法是正确的？</div>
-                        <div class="question-type">单选题</div>
-                    </div>
-                    <div class="options">
-                        <div class="option">A: 订单从创建到签收时间超过7自然日，则会被视作未按时签收订单</div>
-                        <div class="option">B: 该未按时到货订单将面临5美金的处罚</div>
-                        <div class="option">C: 由于店铺上周按时签收率大等于90%，本周未按时签收订单的罚款将被豁免</div>
-                        <div class="option">D: 该未按时到货订单将面临店铺扣2分的处罚</div>
-                    </div>
-                    <div class="answer">
-                        <div class="answer-header">✓ 标准答案</div>
-                        <div>B</div>
-                    </div>
-                    <div class="explanation">
-                        <div class="explanation-header">📚 答案解析</div>
-                        <div>根据履约管理规范，店铺上周按时签收率大等于95%时，本周未按时到货订单将免除罚金处罚；店铺上周按时签收率小于95%时，本周未按时到货订单将每单扣除5美金</div>
-                    </div>
-                </div>
-                
-                <div class="question">
-                    <div class="question-header">
-                        <div class="question-text">若一个自然年内，您的店铺累计出现46单，且虚假发货订单数量为23单，关于以上情况，哪种说法是错误的？</div>
-                        <div class="question-type">单选题</div>
-                    </div>
-                    <div class="options">
-                        <div class="option">A: 若店铺虚假发货情形严重，将可能面临更严格的处罚</div>
-                        <div class="option">B: 店铺将被延长账期30天</div>
-                        <div class="option">C: 店铺将被禁止提现</div>
-                        <div class="option">D: 23个虚假发货订单将每单处罚销售金额的50%，上限200美金，下限10美金</div>
-                    </div>
-                    <div class="answer">
-                        <div class="answer-header">✓ 标准答案</div>
-                        <div>C</div>
-                    </div>
-                    <div class="explanation">
-                        <div class="explanation-header">📚 答案解析</div>
-                        <div>店铺在一个自然年内累计出现20单及以上，且虚假发货订单占比大等于50%，将面临账期延长30天的处罚；当店铺在一个自然年内累计出现50单及以上，且虚假发货订单占比大等于50%，将额外面临禁止提现、限制流量、商品下架、限制店铺经营权限、店铺禁用、店铺清退的处罚</div>
-                    </div>
-                </div>
-                
-                <div class="question">
-                    <div class="question-header">
-                        <div class="question-text">SHEIN平台对于半托管订单的发货时效的要求，哪项是正确的？</div>
-                        <div class="question-type">单选题</div>
-                    </div>
-                    <div class="options">
-                        <div class="option">A: 发货时效指的是导出地址至物流商揽收包裹的时效</div>
-                        <div class="option">B: 上传单号后若长时间没有物流轨迹，系统将在14个工作日后自动判定签收</div>
-                        <div class="option">C: 平台对发货时效的要求为7工作日内上传物流单号</div>
-                        <div class="option">D: 平台对发货时效的要求为5工作日内上传物流单号</div>
-                    </div>
-                    <div class="answer">
-                        <div class="answer-header">✓ 标准答案</div>
-                        <div>D</div>
-                    </div>
-                    <div class="explanation">
-                        <div class="explanation-header">📚 答案解析</div>
-                        <div>根据履约管理规范，订单需在导出地址后5工作日内上传运单号</div>
-                    </div>
-                </div>
-                
-                <div class="question">
-                    <div class="question-header">
-                        <div class="question-text">若您有一笔销售金额5美金的订单，在上传物流单号后5工作日仍没有揽收记录，关于以上情况，哪种说法是正确的？</div>
-                        <div class="question-type">单选题</div>
-                    </div>
-                    <div class="options">
-                        <div class="option">A: 订单将被视作虚假发货，面临10美金的处罚</div>
-                        <div class="option">B: 订单将被视作虚假发货，面临2.5美金的处罚</div>
-                        <div class="option">C: 订单将被视作虚假发货，面临5美金的处罚</div>
-                        <div class="option">D: 上传单号后若长时间没有物流轨迹，系统将在14个工作日后自动判定签收</div>
-                    </div>
-                    <div class="answer">
-                        <div class="answer-header">✓ 标准答案</div>
-                        <div>A</div>
-                    </div>
-                    <div class="explanation">
-                        <div class="explanation-header">📚 答案解析</div>
-                        <div>异常物流轨迹的订单将被判定为虚假发货，每单处罚销售金额的50%，上限200美金，下限10美金</div>
-                    </div>
-                </div>
-                
-                <div class="question">
-                    <div class="question-header">
-                        <div class="question-text">若您的店铺上周按时签收率为95%，这周您的一笔订单超过了平台的要求签收时间仍没有完成签收，关于以上情况，哪一项说法是正确的？</div>
-                        <div class="question-type">单选题</div>
-                    </div>
-                    <div class="options">
-                        <div class="option">A: 每笔订单将面临5美金的处罚</div>
-                        <div class="option">B: 由于店铺上周按时签收率大等于95%，本周未按时签收订单的罚款将被豁免</div>
-                        <div class="option">C: 订单从创建到签收时间超过7自然日，则会被视作未按时签收订单</div>
-                        <div class="option">D: 该未按时到货订单将面临店铺扣2分的处罚</div>
-                    </div>
-                    <div class="answer">
-                        <div class="answer-header">✓ 标准答案</div>
-                        <div>B</div>
-                    </div>
-                    <div class="explanation">
-                        <div class="explanation-header">📚 答案解析</div>
-                        <div>根据履约管理规范，店铺上周按时签收率大等于95%时，本周未按时到货订单将免除罚金处罚；店铺上周按时签收率小于95%时，本周未按时到货订单将每单扣除5美金</div>
-                    </div>
-                </div>
 
-                <div class="question">
-                    <div class="question-header">
-                        <div class="question-text">若您有一笔销售金额20美金的订单，在上传物流单号后5工作日仍没有揽收记录，关于以上情况，哪种说法是正确的？</div>
-                        <div class="question-type">单选题</div>
-                    </div>
-                    <div class="options">
-                        <div class="option">A: 订单将被视作虚假发货，面临20美金的处罚</div>
-                        <div class="option">B: 上传单号后若长时间没有物流轨迹，系统将在14个工作日后自动判定签收</div>
-                        <div class="option">C: 订单将被视作虚假发货，面临5美金的处罚</div>
-                        <div class="option">D: 订单将被视作虚假发货，面临10美金的处罚</div>
-                    </div>
-                    <div class="answer">
-                        <div class="answer-header">✓ 标准答案</div>
-                        <div>D</div>
-                    </div>
-                    <div class="explanation">
-                        <div class="explanation-header">📚 答案解析</div>
-                        <div>异常物流轨迹的订单将被判定为虚假发货，每单处罚销售金额的50%，上限200美金，下限10美金</div>
-                    </div>
-                </div>
+<div class="container">
+    <h1>SHEIN履约规范答题库 (答案直显版)</h1>
 
-                <div class="question">
-                    <div class="question-header">
-                        <div class="question-text">若一个自然年内，您的店铺累计出现60单，且虚假发货订单数量为32单，关于以上情况，哪种说法是错误的？</div>
-                        <div class="question-type">单选题</div>
-                    </div>
-                    <div class="options">
-                        <div class="option">A: 32个虚假发货订单将每单处罚销售金额的50%，上限150美金，下限10美金</div>
-                        <div class="option">B: 32个虚假发货订单将每单处罚销售金额的50%，上限200美金，下限10美金</div>
-                        <div class="option">C: 店铺将被禁止提现</div>
-                        <div class="option">D: 店铺将被延长账期30天</div>
-                    </div>
-                    <div class="answer">
-                        <div class="answer-header">✓ 标准答案</div>
-                        <div>A</div>
-                    </div>
-                    <div class="explanation">
-                        <div class="explanation-header">📚 答案解析</div>
-                        <div>店铺在一个自然年内累计出现20单及以上，且续虚假发货订单占比大等于50%，将面临账期延长的30天的处罚；当店铺在一个自然年内累计出现50单及以上，且虚假发货订单占比大等于50%，将额外面临禁止提现、限制流量、商品下架、限制店铺经营权限、店铺禁用、店铺清退的处罚</div>
-                    </div>
-                </div>
-
-            </div>
-            
-            <!-- 多选题 -->
-            <div class="section" data-type="multi">
-                <h2>多选题</h2>
-                
-                <div class="question">
-                    <div class="question-header">
-                        <div class="question-text">若您将空包裹配送给消费者，会面临怎样的处罚？</div>
-                        <div class="question-type">多选题</div>
-                    </div>
-                    <div class="options">
-                        <div class="option">A: 若及时补发，将不会面临任何处罚</div>
-                        <div class="option">B: 订单将面临销售金额100%的罚金处罚，下限10美金，上限600美金</div>
-                        <div class="option">C: 订单相关商品将被加入回收站</div>
-                        <div class="option">D: 订单将被视作欺诈发货</div>
-                    </div>
-                    <div class="answer">
-                        <div class="answer-header">✓ 标准答案</div>
-                        <div>B, C, D</div>
-                    </div>
-                    <div class="explanation">
-                        <div class="explanation-header">📚 答案解析</div>
-                        <div>将空包裹配送给消费者，消费者投诉且商家举证失败后，订单将被判定为欺诈发货，会面临包括但不限于以下处罚：每单处罚订单销售金额的100%，上限600美金，下限10美金；商品加入回收站；店铺经营权限限制等。</div>
-                    </div>
-                </div>
-                
-                <div class="question">
-                    <div class="question-header">
-                        <div class="question-text">若您的店铺上周按时签收率为90%，这周您的一笔订单超过了平台的要求签收时间仍没有完成签收，关于以上情况，哪些说法是正确的？</div>
-                        <div class="question-type">多选题</div>
-                    </div>
-                    <div class="options">
-                        <div class="option">A: 每笔订单将面临5美金的处罚</div>
-                        <div class="option">B: 店铺上周按时签收率未达到95%，本周未按时签收订单的将被正常罚款</div>
-                        <div class="option">C: 由于店铺上周按时签收率大等于90%，本周未按时签收订单的罚款将被豁免</div>
-                        <div class="option">D: 若店铺存在大量且占比较大的未按时签收订单，店铺可能面临额外处罚，包括但不限于商品下架、关闭自履约、店铺禁用等</div>
-                    </div>
-                    <div class="answer">
-                        <div class="answer-header">✓ 标准答案</div>
-                        <div>A, B, D</div>
-                    </div>
-                    <div class="explanation">
-                        <div class="explanation-header">📚 答案解析</div>
-                        <div>根据履约管理规范，店铺上周按时签收率大等于95%时，本周未按时到货订单将免除罚金处罚；店铺上周按时签收率小于95%时，本周未按时到货订单将每单扣除5美金</div>
-                    </div>
-                </div>
-                
-                <div class="question">
-                    <div class="question-header">
-                        <div class="question-text">若您有一笔订单，导出地址后在后台点击确认无货，则订单状态会如何流转？若会因此面临处罚，将面临怎样的处罚？</div>
-                        <div class="question-type">多选题</div>
-                    </div>
-                    <div class="options">
-                        <div class="option">A: 订单将被取消，并被视为卖家原因订单取消</div>
-                        <div class="option">B: 确认无货不会面临任何处罚</div>
-                        <div class="option">C: 订单将停留在待发货状态，直至商品补货到货</div>
-                        <div class="option">D: 每笔订单将面临5美金的处罚</div>
-                    </div>
-                    <div class="answer">
-                        <div class="answer-header">✓ 标准答案</div>
-                        <div>A, D</div>
-                    </div>
-                    <div class="explanation">
-                        <div class="explanation-header">📚 答案解析</div>
-                        <div>无论订单处于何种处理状态，在后台点击确认无货后，订单都将被视作卖家原因取消订单，并面临每单5美金的处罚</div>
-                    </div>
-                </div>
-                
-                <div class="question">
-                    <div class="question-header">
-                        <div class="question-text">若您的店铺上周按时签收率为95%，这周您的一笔订单超过了平台的要求签收时间仍没有完成签收，关于以上情况，哪些说法是正确的？</div>
-                        <div class="question-type">多选题</div>
-                    </div>
-                    <div class="options">
-                        <div class="option">A: 每笔订单将面临5美金的处罚</div>
-                        <div class="option">B: 由于店铺上周按时签收率大等于95%，本周未按时签收订单的罚款将被豁免</div>
-                        <div class="option">C: 由于店铺上周按时签收率大等于90%，本周未按时签收订单的罚款将被豁免</div>
-                        <div class="option">D: 若店铺存在大量且占比较大的未按时签收订单，店铺可能面临额外处罚，包括但不限于商品下架、关闭自履约、店铺禁用等</div>
-                    </div>
-                    <div class="answer">
-                        <div class="answer-header">✓ 标准答案</div>
-                        <div>B, D</div>
-                    </div>
-                    <div class="explanation">
-                        <div class="explanation-header">📚 答案解析</div>
-                        <div>根据履约管理规范，店铺上周按时签收率大等于95%时，本周未按时到货订单将免除罚金处罚；店铺上周按时签收率小于95%时，本周未按时到货订单将每单扣除5美金</div>
-                    </div>
-                </div>
-                
-                <div class="question">
-                    <div class="question-header">
-                        <div class="question-text">若您有一笔销售金额20美金的订单，在上传物流单号后5工作日仍没有揽收记录，关于以上情况，哪些说法是正确的？</div>
-                        <div class="question-type">多选题</div>
-                    </div>
-                    <div class="options">
-                        <div class="option">A: 订单将面临10美金的处罚</div>
-                        <div class="option">B: 上传单号后若长时间没有物流轨迹，应在后台及时发起手动修改物流状态申请</div>
-                        <div class="option">C: 订单将面临5美金的处罚</div>
-                        <div class="option">D: 订单将被视作虚假发货</div>
-                    </div>
-                    <div class="answer">
-                        <div class="answer-header">✓ 标准答案</div>
-                        <div>A, B, D</div>
-                    </div>
-                    <div class="explanation">
-                        <div class="explanation-header">📚 答案解析</div>
-                        <div>异常物流轨迹的订单将被判定为虚假发货，每单处罚销售金额的50%，上限200美金，下限10美金</div>
-                    </div>
-                </div>
-                
-                <div class="question">
-                    <div class="question-header">
-                        <div class="question-text">若一个自然年内，您的店铺累计出现46单，且虚假发货订单数量为23单，会面临怎样的处罚？</div>
-                        <div class="question-type">多选题</div>
-                    </div>
-                    <div class="options">
-                        <div class="option">A: 店铺将被清退</div>
-                        <div class="option">B: 23个虚假发货订单将每单处罚销售金额的50%，上限200美金，下限10美金</div>
-                        <div class="option">C: 店铺将被禁止提现</div>
-                        <div class="option">D: 店铺将被延长账期30天</div>
-                    </div>
-                    <div class="answer">
-                        <div class="answer-header">✓ 标准答案</div>
-                        <div>B, D</div>
-                    </div>
-                    <div class="explanation">
-                        <div class="explanation-header">📚 答案解析</div>
-                        <div>店铺在一个自然年内累计出现20单及以上，且虚假发货订单占比大等于50%，将面临账期延长30天的处罚；当店铺在一个自然年内累计出现50单及以上，且虚假发货订单占比大等于50%，将额外面临禁止提现、限制流量、商品下架、限制店铺经营权限、店铺禁用、店铺清退的处罚</div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- 判断题 -->
-            <div class="section" data-type="judge">
-                <h2>判断题</h2>
-                
-                <div class="question">
-                    <div class="question-header">
-                        <div class="question-text">若您有一笔销售金额20美金的订单，在上传物流单号后5工作日仍没有揽收记录，会面临10美金的处罚</div>
-                        <div class="question-type">判断题</div>
-                    </div>
-                    <div class="answer">
-                        <div class="answer-header">✓ 标准答案</div>
-                        <div>正确</div>
-                    </div>
-                    <div class="explanation">
-                        <div class="explanation-header">📚 答案解析</div>
-                        <div>异常物流轨迹的订单将被判定为虚假发货，每单处罚销售金额的50%，上限200美金，下限10美金</div>
-                    </div>
-                </div>
-                
-                <div class="question">
-                    <div class="question-header">
-                        <div class="question-text">若您的店铺上周按时签收率为95%，这周您的一笔订单超过了平台的要求签收时间仍没有完成签收，会面临每笔订单5美金的处罚</div>
-                        <div class="question-type">判断题</div>
-                    </div>
-                    <div class="answer">
-                        <div class="answer-header">✓ 标准答案</div>
-                        <div>错误</div>
-                    </div>
-                    <div class="explanation">
-                        <div class="explanation-header">📚 答案解析</div>
-                        <div>根据履约管理规范，店铺上周按时签收率大等于95%时，本周未按时到货订单将免除罚金处罚；店铺上周按时签收率小于95%时，本周未按时到货订单将每单扣除5美金</div>
-                    </div>
-                </div>
-                
-                <div class="question">
-                    <div class="question-header">
-                        <div class="question-text">若一个自然年内，您的店铺累计出现60单，且虚假发货订单数量为23单，会面临店铺清退的处罚</div>
-                        <div class="question-type">判断题</div>
-                    </div>
-                    <div class="answer">
-                        <div class="answer-header">✓ 标准答案</div>
-                        <div>错误</div>
-                    </div>
-                    <div class="explanation">
-                        <div class="explanation-header">📚 答案解析</div>
-                        <div>店铺在一个自然年内累计出现20单及以上，且虚假发货订单占比大等于50%，将面临账期延长30天的处罚；当店铺在一个自然年内累计出现50单及以上，且虚假发货订单占比大等于50%，将额外面临禁止提现、限制流量、商品下架、限制店铺经营权限、店铺禁用、店铺清退的处罚</div>
-                    </div>
-                </div>
-
-                <div class="question">
-                    <div class="question-header">
-                        <div class="question-text">若您将空包裹配送给消费者，会面临账期延长的处罚</div>
-                        <div class="question-type">判断题</div>
-                    </div>
-                    <div class="answer">
-                        <div class="answer-header">✓ 标准答案</div>
-                        <div>正确</div>
-                    </div>
-                    <div class="explanation">
-                        <div class="explanation-header">📚 答案解析</div>
-                        <div>将空包裹配送给消费者将被判定为欺诈发货，会面临账期延长的处罚</div>
-                    </div>
-                </div>
-
-                <div class="question">
-                    <div class="question-header">
-                        <div class="question-text">若一个自然年内，您的店铺累计出现46单，且虚假发货订单数量为23单，会面临账期延长的处罚</div>
-                        <div class="question-type">判断题</div>
-                    </div>
-                    <div class="answer">
-                        <div class="answer-header">✓ 标准答案</div>
-                        <div>错误</div>
-                    </div>
-                    <div class="explanation">
-                        <div class="explanation-header">📚 答案解析</div>
-                        <div>店铺在一个自然年内累计出现20单及以上，且续虚假发货订单占比大等于50%，将面临账期延长的30天的处罚；当店铺在一个自然年内累计出现50单及以上，且虚假发货订单占比大等于50%，将额外面临禁止提现、限制流量、商品下架、限制店铺经营权限、店铺禁用、店铺清退的处罚</div>
-                    </div>
-                </div>
-                
-                <div class="question">
-                    <div class="question-header">
-                        <div class="question-text">SHEIN平台对于半托管订单的发货时效没有要求</div>
-                        <div class="question-type">判断题</div>
-                    </div>
-                    <div class="answer">
-                        <div class="answer-header">✓ 标准答案</div>
-                        <div>错误</div>
-                    </div>
-                    <div class="explanation">
-                        <div class="explanation-header">📚 答案解析</div>
-                        <div>根据履约管理规范，导出地址后5工作日未发货，订单将被取消，并扣除5美金</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <footer>
-            <p>SHEIN平台规则答题库 &copy; 2023 | 最后更新: 2023-11-15</p>
-            <p>本答题库内容仅供参考，请以SHEIN平台最新官方政策为准</p>
-        </footer>
+    <div class="controls">
+        <input type="text" id="searchInput" class="search-box" placeholder="输入关键词搜索题目...">
+        <button class="filter-btn active" data-filter="all">全部</button>
+        <button class="filter-btn" data-filter="单选题">单选题</button>
+        <button class="filter-btn" data-filter="多选题">多选题</button>
+        <button class="filter-btn" data-filter="判断题">判断题</button>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const searchInput = document.getElementById('searchInput');
-            const searchButton = document.getElementById('searchButton');
-            const filterButtons = document.querySelectorAll('.filter-btn');
-            const sections = document.querySelectorAll('.section');
-            const questions = document.querySelectorAll('.question');
+    <div id="counter"></div>
+
+    <div id="qa-container">
+        <!-- Question -->
+        <div class="qa-card" data-type="单选题">
+            <div class="question-header">
+                <p class="question-title">若您有一笔订单，导出地址后在后台点击确认无货，关于以上情况，哪一项说法是正确的？</p>
+                <span class="question-type">单选题</span>
+            </div>
+            <div class="options">
+                <ul>
+                    <li>A: 订单将被取消，并被视为卖家原因订单取消，扣2分</li>
+                    <li>B: 订单将被取消，但并不会被视为卖家原因订单取消</li>
+                    <li>C: 订单将被取消，并被视为卖家原因订单取消，处罚5美金</li>
+                    <li>D: 订单将停留在待发货状态，直至商品补货到货</li>
+                </ul>
+            </div>
+            <div class="answer-section">
+                <p><strong>标准答案：</strong><span class="correct-answer">C</span></p>
+                <p><strong>答案解析：</strong>无论订单处于何种处理状态，在后台点击确认无货后，订单都将被视作卖家原因取消订单，并面临每单5美金的处罚。</p>
+            </div>
+        </div>
+
+        <!-- Question -->
+        <div class="qa-card" data-type="单选题">
+            <div class="question-header">
+                <p class="question-title">若您的店铺上周按时签收率为90%，这周您的一笔订单超过了平台的要求签收时间仍没有完成签收，关于以上情况，哪一项说法是正确的？</p>
+                <span class="question-type">单选题</span>
+            </div>
+            <div class="options">
+                <ul>
+                    <li>A: 订单从创建到签收时间超过7自然日，则会被视作未按时签收订单</li>
+                    <li>B: 该未按时到货订单将面临5美金的处罚</li>
+                    <li>C: 由于店铺上周按时签收率大等于90%，本周未按时签收订单的罚款将被豁免</li>
+                    <li>D: 该未按时到货订单将面临店铺扣2分的处罚</li>
+                </ul>
+            </div>
+            <div class="answer-section">
+                <p><strong>标准答案：</strong><span class="correct-answer">B</span></p>
+                <p><strong>答案解析：</strong>根据履约管理规范，店铺上周按时签收率大等于95%时，本周未按时到货订单将免除罚金处罚；店铺上周按时签收率小于95%时，本周未按时到货订单将每单扣除5美金。</p>
+            </div>
+        </div>
+        
+        <!-- Question -->
+        <div class="qa-card" data-type="单选题">
+            <div class="question-header">
+                <p class="question-title">若一个自然年内，您的店铺累计出现46单，且虚假发货订单数量为23单，关于以上情况，哪种说法是错误的？</p>
+                <span class="question-type">单选题</span>
+            </div>
+            <div class="options">
+                <ul>
+                    <li>A: 若店铺虚假发货情形严重，将可能面临更严格的处罚</li>
+                    <li>B: 店铺将被延长账期30天</li>
+                    <li>C: 店铺将被禁止提现</li>
+                    <li>D: 23个虚假发货订单将每单处罚销售金额的50%，上限200美金，下限10美金</li>
+                </ul>
+            </div>
+            <div class="answer-section">
+                <p><strong>标准答案：</strong><span class="correct-answer">C</span></p>
+                <p><strong>答案解析：</strong>店铺在一个自然年内累计出现20单及以上，且虚假发货订单占比大等于50%，将面临账期延长的30天的处罚；当店铺在一个自然年内累计出现50单及以上，且虚假发货订单占比大等于50%，将额外面临禁止提现、限制流量、商品下架、限制店铺经营权限、店铺禁用、店铺清退的处罚。</p>
+            </div>
+        </div>
+
+        <!-- Question -->
+        <div class="qa-card" data-type="单选题">
+            <div class="question-header">
+                <p class="question-title">SHEIN平台对于半托管订单的发货时效的要求，哪项是正确的？</p>
+                <span class="question-type">单选题</span>
+            </div>
+            <div class="options">
+                <ul>
+                    <li>A: 发货时效指的是导出地址至物流商揽收包裹的时效</li>
+                    <li>B: 上传单号后若长时间没有物流轨迹，系统将在14个工作日后自动判定签收</li>
+                    <li>C: 平台对发货时效的要求为7工作日内上传物流单号</li>
+                    <li>D: 平台对发货时效的要求为5工作日内上传物流单号</li>
+                </ul>
+            </div>
+            <div class="answer-section">
+                <p><strong>标准答案：</strong><span class="correct-answer">D</span></p>
+                <p><strong>答案解析：</strong>根据履约管理规范，订单需在导出地址后5工作日内上传运单号。</p>
+            </div>
+        </div>
+
+        <!-- Question -->
+        <div class="qa-card" data-type="单选题">
+            <div class="question-header">
+                <p class="question-title">若您有一笔销售金额5美金的订单，在上传物流单号后5工作日仍没有揽收记录，关于以上情况，哪种说法是正确的？</p>
+                <span class="question-type">单选题</span>
+            </div>
+            <div class="options">
+                <ul>
+                    <li>A: 订单将被视作虚假发货，面临10美金的处罚</li>
+                    <li>B: 订单将被视作虚假发货，面临2.5美金的处罚</li>
+                    <li>C: 订单将被视作虚假发货，面临5美金的处罚</li>
+                    <li>D: 上传单号后若长时间没有物流轨迹，系统将在14个工作日后自动判定签收</li>
+                </ul>
+            </div>
+            <div class="answer-section">
+                <p><strong>标准答案：</strong><span class="correct-answer">A</span></p>
+                <p><strong>答案解析：</strong>异常物流轨迹的订单将被判定为虚假发货，每单处罚销售金额的50%，上限200美金，下限10美金。</p>
+            </div>
+        </div>
+        
+        <!-- Question -->
+        <div class="qa-card" data-type="单选题">
+            <div class="question-header">
+                <p class="question-title">若您的店铺上周按时签收率为95%，这周您的一笔订单超过了平台的要求签收时间仍没有完成签收，关于以上情况，哪一项说法是正确的？</p>
+                <span class="question-type">单选题</span>
+            </div>
+            <div class="options">
+                <ul>
+                    <li>A: 每笔订单将面临5美金的处罚</li>
+                    <li>B: 由于店铺上周按时签收率大等于95%，本周未按时签收订单的罚款将被豁免</li>
+                    <li>C: 订单从创建到签收时间超过7自然日，则会被视作未按时签收订单</li>
+                    <li>D: 该未按时到货订单将面临店铺扣2分的处罚</li>
+                </ul>
+            </div>
+            <div class="answer-section">
+                <p><strong>标准答案：</strong><span class="correct-answer">B</span></p>
+                <p><strong>答案解析：</strong>根据履约管理规范，店铺上周按时签收率大等于95%时，本周未按时到货订单将免除罚金处罚；店铺上周按时签收率小于95%时，本周未按时到货订单将每单扣除5美金。</p>
+            </div>
+        </div>
+        
+        <!-- Question -->
+        <div class="qa-card" data-type="多选题">
+            <div class="question-header">
+                <p class="question-title">若您将空包裹配送给消费者，会面临怎样的处罚？</p>
+                <span class="question-type">多选题</span>
+            </div>
+            <div class="options">
+                <ul>
+                    <li>A: 若及时补发，将不会面临任何处罚</li>
+                    <li>B: 订单将面临销售金额100%的罚金处罚，下限10美金，上限600美金</li>
+                    <li>C: 订单相关商品将被加入回收站</li>
+                    <li>D: 订单将被视作欺诈发货</li>
+                </ul>
+            </div>
+            <div class="answer-section">
+                <p><strong>标准答案：</strong><span class="correct-answer">B, C, D</span></p>
+                <p><strong>答案解析：</strong>将空包裹配送给消费者，消费者投诉且商家举证失败后，订单将被判定为欺诈发货，会面临包括但不限于以下处罚：每单处罚订单销售金额的100%，上限600美金，下限10美金；商品加入回收站；店铺经营权限限制等。</p>
+            </div>
+        </div>
+
+        <!-- Question -->
+        <div class="qa-card" data-type="多选题">
+            <div class="question-header">
+                <p class="question-title">若您的店铺上周按时签收率为90%，这周您的一笔订单超过了平台的要求签收时间仍没有完成签收，关于以上情况，哪些说法是正确的？</p>
+                <span class="question-type">多选题</span>
+            </div>
+            <div class="options">
+                <ul>
+                    <li>A: 每笔订单将面临5美金的处罚</li>
+                    <li>B: 店铺上周按时签收率未达到95%，本周未按时签收订单的将被正常罚款</li>
+                    <li>C: 由于店铺上周按时签收率大等于90%，本周未按时签收订单的罚款将被豁免</li>
+                    <li>D: 若店铺存在大量且占比较大的未按时签收订单，店铺可能面临额外处罚，包括但不限于商品下架、关闭自履约、店铺禁用等</li>
+                </ul>
+            </div>
+            <div class="answer-section">
+                <p><strong>标准答案：</strong><span class="correct-answer">A, B, D</span></p>
+                <p><strong>答案解析：</strong>根据履约管理规范，店铺上周按时签收率大等于95%时，本周未按时到货订单将免除罚金处罚；店铺上周按时签收率小于95%时，本周未按时到货订单将每单扣除5美金。</p>
+            </div>
+        </div>
+
+        <!-- Question -->
+        <div class="qa-card" data-type="多选题">
+            <div class="question-header">
+                <p class="question-title">若您有一笔订单，导出地址后在后台点击确认无货，则订单状态会如何流转？若会因此面临处罚，将面临怎样的处罚？</p>
+                <span class="question-type">多选题</span>
+            </div>
+            <div class="options">
+                <ul>
+                    <li>A: 订单将被取消，并被视为卖家原因订单取消</li>
+                    <li>B: 确认无货不会面临任何处罚</li>
+                    <li>C: 订单将停留在待发货状态，直至商品补货到货</li>
+                    <li>D: 每笔订单将面临5美金的处罚</li>
+                </ul>
+            </div>
+            <div class="answer-section">
+                <p><strong>标准答案：</strong><span class="correct-answer">A, D</span></p>
+                <p><strong>答案解析：</strong>无论订单处于何种处理状态，在后台点击确认无货后，订单都将被视作卖家原因取消订单，并面临每单5美金的处罚。</p>
+            </div>
+        </div>
+
+        <!-- Question -->
+        <div class="qa-card" data-type="多选题">
+            <div class="question-header">
+                <p class="question-title">若您的店铺上周按时签收率为95%，这周您的一笔订单超过了平台的要求签收时间仍没有完成签收，关于以上情况，哪些说法是正确的？</p>
+                <span class="question-type">多选题</span>
+            </div>
+            <div class="options">
+                <ul>
+                    <li>A: 每笔订单将面临5美金的处罚</li>
+                    <li>B: 由于店铺上周按时签收率大等于95%，本周未按时签收订单的罚款将被豁免</li>
+                    <li>C: 由于店铺上周按时签收率大等于90%，本周未按时签收订单的罚款将被豁免</li>
+                    <li>D: 若店铺存在大量且占比较大的未按时签收订单，店铺可能面临额外处罚，包括但不限于商品下架、关闭自履约、店铺禁用等</li>
+                </ul>
+            </div>
+            <div class="answer-section">
+                <p><strong>标准答案：</strong><span class="correct-answer">B, D</span></p>
+                <p><strong>答案解析：</strong>根据履约管理规范，店铺上周按时签收率大等于95%时，本周未按时到货订单将免除罚金处罚；店铺上周按时签收率小于95%时，本周未按时到货订单将每单扣除5美金。</p>
+            </div>
+        </div>
+
+        <!-- Question -->
+        <div class="qa-card" data-type="多选题">
+            <div class="question-header">
+                <p class="question-title">若您有一笔销售金额20美金的订单，在上传物流单号后5工作日仍没有揽收记录，关于以上情况，哪些说法是正确的？</p>
+                <span class="question-type">多选题</span>
+            </div>
+            <div class="options">
+                <ul>
+                    <li>A: 订单将面临10美金的处罚</li>
+                    <li>B: 上传单号后若长时间没有物流轨迹，应在后台及时发起手动修改物流状态申请</li>
+                    <li>C: 订单将面临5美金的处罚</li>
+                    <li>D: 订单将被视作虚假发货</li>
+                </ul>
+            </div>
+            <div class="answer-section">
+                <p><strong>标准答案：</strong><span class="correct-answer">A, B, D</span></p>
+                <p><strong>答案解析：</strong>异常物流轨迹的订单将被判定为虚假发货，每单处罚销售金额的50%，上限200美金，下限10美金。</p>
+            </div>
+        </div>
+
+        <!-- Question -->
+        <div class="qa-card" data-type="多选题">
+            <div class="question-header">
+                <p class="question-title">若一个自然年内，您的店铺累计出现46单，且虚假发货订单数量为23单，会面临怎样的处罚？</p>
+                <span class="question-type">多选题</span>
+            </div>
+            <div class="options">
+                <ul>
+                    <li>A: 店铺将被清退</li>
+                    <li>B: 23个虚假发货订单将每单处罚销售金额的50%，上限200美金，下限10美金</li>
+                    <li>C: 店铺将被禁止提现</li>
+                    <li>D: 店铺将被延长账期30天</li>
+                </ul>
+            </div>
+            <div class="answer-section">
+                <p><strong>标准答案：</strong><span class="correct-answer">B, D</span></p>
+                <p><strong>答案解析：</strong>店铺在一个自然年内累计出现20单及以上，且虚假发货订单占比大等于50%，将面临账期延长的30天的处罚；当店铺在一个自然年内累计出现50单及以上，且虚假发货订单占比大等于50%，将额外面临禁止提现、限制流量、商品下架、限制店铺经营权限、店铺禁用、店铺清退的处罚。</p>
+            </div>
+        </div>
+
+        <!-- Question -->
+        <div class="qa-card" data-type="判断题">
+            <div class="question-header">
+                <p class="question-title">若您有一笔销售金额20美金的订单，在上传物流单号后5工作日仍没有揽收记录，会面临10美金的处罚。</p>
+                <span class="question-type">判断题</span>
+            </div>
+            <div class="options">
+                <ul>
+                    <li>正确</li>
+                    <li>错误</li>
+                </ul>
+            </div>
+            <div class="answer-section">
+                <p><strong>标准答案：</strong><span class="correct-answer">正确</span></p>
+                <p><strong>答案解析：</strong>异常物流轨迹的订单将被判定为虚假发货，每单处罚销售金额的50%，上限200美金，下限10美金。20美金的50%是10美金，符合下限标准。</p>
+            </div>
+        </div>
+
+        <!-- Question -->
+        <div class="qa-card" data-type="判断题">
+            <div class="question-header">
+                <p class="question-title">若您的店铺上周按时签收率为95%，这周您的一笔订单超过了平台的要求签收时间仍没有完成签收，会面临每笔订单5美金的处罚。</p>
+                <span class="question-type">判断题</span>
+            </div>
+            <div class="options">
+                <ul>
+                    <li>正确</li>
+                    <li>错误</li>
+                </ul>
+            </div>
+            <div class="answer-section">
+                <p><strong>标准答案：</strong><span class="correct-answer">错误</span></p>
+                <p><strong>答案解析：</strong>根据履约管理规范，店铺上周按时签收率大等于95%时，本周未按时到货订单将免除罚金处罚；店铺上周按时签收率小于95%时，本周未按时到货订单将每单扣除5美金。</p>
+            </div>
+        </div>
+        
+        <!-- Question -->
+        <div class="qa-card" data-type="判断题">
+            <div class="question-header">
+                <p class="question-title">若一个自然年内，您的店铺累计出现60单，且虚假发货订单数量为23单，会面临店铺清退的处罚。</p>
+                <span class="question-type">判断题</span>
+            </div>
+            <div class="options">
+                <ul>
+                    <li>正确</li>
+                    <li>错误</li>
+                </ul>
+            </div>
+            <div class="answer-section">
+                <p><strong>标准答案：</strong><span class="correct-answer">错误</span></p>
+                <p><strong>答案解析：</strong>虚假发货订单占比为23/60 ≈ 38.3%，未达到50%。店铺在一个自然年内累计出现20单及以上，且虚假发货订单占比大等于50%，将面临账期延长30天的处罚；当店铺在一个自然年内累计出现50单及以上，且虚假发货订单占比大等于50%，才会面临更严重的处罚如禁止提现、清退等。此场景不满足占比条件。</p>
+            </div>
+        </div>
+
+        <!-- Question -->
+        <div class="qa-card" data-type="判断题">
+            <div class="question-header">
+                <p class="question-title">SHEIN平台对于半托管订单的发货时效没有要求。</p>
+                <span class="question-type">判断题</span>
+            </div>
+            <div class="options">
+                <ul>
+                    <li>正确</li>
+                    <li>错误</li>
+                </ul>
+            </div>
+            <div class="answer-section">
+                <p><strong>标准答案：</strong><span class="correct-answer">错误</span></p>
+                <p><strong>答案解析：</strong>根据履约管理规范，导出地址后5工作日未发货（未上传运单号），订单将被取消，并扣除5美金。</p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('searchInput');
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const qaContainer = document.getElementById('qa-container');
+    const qaCards = qaContainer.querySelectorAll('.qa-card');
+    const counter = document.getElementById('counter');
+
+    let currentFilter = 'all';
+
+    function filterAndSearch() {
+        const searchTerm = searchInput.value.toLowerCase();
+        let visibleCount = 0;
+
+        qaCards.forEach(card => {
+            const type = card.getAttribute('data-type');
+            const textContent = card.textContent.toLowerCase();
             
-            // 搜索功能
-            function searchQuestions() {
-                const searchTerm = searchInput.value.toLowerCase().trim();
-                
-                questions.forEach(question => {
-                    const questionText = question.querySelector('.question-text').textContent.toLowerCase();
-                    const questionType = question.querySelector('.question-type').textContent;
-                    
-                    if (searchTerm === '') {
-                        question.style.display = 'block';
-                    } else if (questionText.includes(searchTerm)) {
-                        question.style.display = 'block';
-                    } else {
-                        question.style.display = 'none';
-                    }
-                });
-                
-                // 检查是否有结果
-                const visibleQuestions = document.querySelectorAll('.question[style="display: block;"]');
-                if (visibleQuestions.length === 0 && searchTerm !== '') {
-                    const noResults = document.createElement('div');
-                    noResults.className = 'no-results';
-                    noResults.textContent = '没有找到匹配的题目';
-                    
-                    const content = document.querySelector('.content');
-                    content.innerHTML = '';
-                    content.appendChild(noResults);
-                }
+            const typeMatch = (currentFilter === 'all' || type === currentFilter);
+            const searchMatch = textContent.includes(searchTerm);
+
+            if (typeMatch && searchMatch) {
+                card.style.display = 'block';
+                visibleCount++;
+            } else {
+                card.style.display = 'none';
             }
-            
-            searchButton.addEventListener('click', searchQuestions);
-            searchInput.addEventListener('keyup', function(e) {
-                if (e.key === 'Enter') {
-                    searchQuestions();
-                }
-            });
-            
-            // 筛选功能
-            filterButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const filter = this.getAttribute('data-filter');
-                    
-                    // 更新按钮状态
-                    filterButtons.forEach(btn => btn.classList.remove('active'));
-                    this.classList.add('active');
-                    
-                    // 显示/隐藏题目
-                    sections.forEach(section => {
-                        if (filter === 'all') {
-                            section.style.display = 'block';
-                        } else {
-                            if (section.getAttribute('data-type') === filter) {
-                                section.style.display = 'block';
-                            } else {
-                                section.style.display = 'none';
-                            }
-                        }
-                    });
-                });
-            });
         });
-    </script>
+        
+        counter.textContent = `共找到 ${visibleCount} / ${qaCards.length} 道题目`;
+    }
+
+    searchInput.addEventListener('input', filterAndSearch);
+
+    filterButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+            currentFilter = button.getAttribute('data-filter');
+            filterAndSearch();
+        });
+    });
+
+    // Initial filter and count
+    filterAndSearch();
+});
+</script>
+
 </body>
 </html>
