@@ -1,567 +1,407 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SHEIN履约规范答题库 (答案直显版)</title>
-    <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            line-height: 1.6;
-            background-color: #f4f7f9;
-            color: #333;
-            margin: 0;
-            padding: 20px;
-        }
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            background-color: #ffffff;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-        }
-        h1 {
-            text-align: center;
-            color: #d52b34;
-            margin-bottom: 25px;
-            border-bottom: 2px solid #f0f0f0;
-            padding-bottom: 15px;
-        }
-        .controls {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin-bottom: 30px;
-            padding: 15px;
-            background-color: #fdfdfe;
-            border-radius: 8px;
-            border: 1px solid #e0e6ed;
-            position: sticky;
-            top: 0;
-            z-index: 10;
-        }
-        .search-box {
-            flex-grow: 1;
-            padding: 10px 15px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            font-size: 16px;
-            min-width: 200px;
-        }
-        .filter-btn {
-            padding: 10px 20px;
-            border: 1px solid #d52b34;
-            background-color: #fff;
-            color: #d52b34;
-            cursor: pointer;
-            border-radius: 6px;
-            font-size: 15px;
-            transition: all 0.3s ease;
-        }
-        .filter-btn:hover {
-            background-color: #d52b34;
-            color: #fff;
-        }
-        .filter-btn.active {
-            background-color: #d52b34;
-            color: #fff;
-            font-weight: bold;
-        }
-        .qa-card {
-            background-color: #ffffff;
-            border: 1px solid #e0e6ed;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
-            transition: box-shadow 0.3s ease;
-        }
-        .qa-card:hover {
-            box-shadow: 0 2px 10px rgba(0,0,0,0.07);
-        }
-        .question-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-        .question-title {
-            font-size: 1.1em;
-            font-weight: bold;
-            color: #1a202c;
-            flex-grow: 1;
-            margin: 0;
-        }
-        .question-type {
-            font-size: 0.8em;
-            background-color: #e2e8f0;
-            color: #4a5568;
-            padding: 3px 8px;
-            border-radius: 10px;
-            white-space: nowrap;
-            margin-left: 15px;
-        }
-        .options ul {
-            list-style-type: none;
-            padding-left: 0;
-            margin: 0;
-        }
-        .options li {
-            padding: 8px 0;
-            border-bottom: 1px dashed #f0f0f0;
-        }
-        .options li:last-child {
-            border-bottom: none;
-        }
-        .answer-section {
-            margin-top: 20px;
-            padding: 15px;
-            background-color: #f7fafc;
-            border-radius: 6px;
-            border-left: 4px solid #48bb78;
-        }
-        .answer-section strong {
-            color: #2f855a;
-        }
-        .answer-section .correct-answer {
-             font-weight: bold;
-             color: #d52b34;
-        }
-        #counter {
-            text-align: center;
-            margin-bottom: 20px;
-            color: #718096;
-            font-style: italic;
-        }
-    </style>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<title>eMAG市场海选系统</title>
+	<link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+	<link rel="stylesheet" href="./styles/main.css">
+	<link rel="stylesheet" href="./styles/components.css">
+	<script src="https://cdn.tailwindcss.com"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
 <body>
+	<div class="app-shell">
+		<!-- Sidebar -->
+		<aside id="appSidebar" class="app-sidebar" aria-label="侧边栏导航">
+			<div class="app-sidebar__header">
+				<div class="app-sidebar__brand">
+					<div class="app-sidebar__logo" aria-hidden="true">e</div>
+					<div class="app-sidebar__title">eMAG 市场海选系统</div>
+				</div>
+				<button id="sidebarCloseBtn" class="app-sidebar__icon-btn" type="button" aria-label="关闭侧边栏">
+					<i class="fas fa-times"></i>
+				</button>
+			</div>
+			<nav class="app-sidebar__nav" aria-label="功能模块">
+				<a href="#/home" class="app-sidebar__item" data-route="home">
+					<i class="fas fa-home"></i>
+					<span>首页</span>
+				</a>
+				<a href="#/dashboard" class="app-sidebar__item active" data-route="dashboard">
+					<i class="fas fa-chart-line"></i>
+					<span>产品海选看板</span>
+				</a>
+				<a href="#/profit-calculator" class="app-sidebar__item" data-route="profit-calculator">
+					<i class="fas fa-calculator"></i>
+					<span>利润测算</span>
+				</a>
+				<!-- 后续模块入口提示 -->
+				<div class="app-sidebar__section">
+					<div class="app-sidebar__section-title">后续模块入口</div>
+					<div class="app-sidebar__hint">可在此处新增更多功能页面的导航链接</div>
+				</div>
+			</nav>
+		</aside>
+		<div id="sidebarOverlay" class="app-sidebar__overlay" aria-hidden="true"></div>
 
-<div class="container">
-    <h1>SHEIN履约规范答题库 (答案直显版)</h1>
+		<!-- Main -->
+		<main class="app-main">
+			<!-- 顶部标签页导航栏 -->
+			<div class="tabs-header">
+				<div id="tabsList" class="tabs-list" role="tablist">
+					<!-- 标签项将通过 JS 动态生成 -->
+				</div>
+			</div>
+			<!-- 内容面板区域 -->
+			<div id="tabsPanels" class="tabs-panels">
+				<!-- 首页面板（默认显示） -->
+				<div class="tabs-panel tabs-panel--active" data-panel-id="tab-home" role="tabpanel" aria-hidden="false">
+					<div class="app-content px-4 sm:px-6 lg:px-8 py-6">
+						<div class="mb-6">
+							<h1 class="text-2xl font-bold text-gray-900 flex items-center gap-2">
+								<i class="fas fa-home text-blue-600"></i> 首页
+							</h1>
+							<p class="text-sm text-gray-500 mt-1">欢迎使用 eMAG 市场海选系统</p>
+						</div>
+						<div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+							<div class="text-center py-12">
+								<i class="fas fa-home text-6xl text-gray-300 mb-4"></i>
+								<p class="text-lg text-gray-600 mb-2">这是一个空白首页</p>
+								<p class="text-sm text-gray-500">请点击顶部标签栏的"产品海选看板"标签查看功能页面</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- 产品海选看板面板 -->
+				<div class="tabs-panel" data-panel-id="tab-dashboard" role="tabpanel" aria-hidden="true">
+					<div class="app-content pt-0 pb-0" data-tab-content="tab-dashboard" style="display: flex; flex-direction: column; height: 100%;">
+		<div class="flex items-center gap-3 lg:hidden px-4 sm:px-6 lg:px-8 pt-4 pb-3">
+			<button id="sidebarToggleBtn" class="text-xs text-gray-600 hover:text-blue-600 bg-white border border-gray-200 px-3 py-1.5 rounded-md shadow-sm flex items-center gap-1 transition-all" type="button" aria-label="打开侧边栏">
+				<i class="fas fa-bars"></i> 菜单
+			</button>
+		</div>
 
-    <div class="controls">
-        <input type="text" id="searchInput" class="search-box" placeholder="输入关键词搜索题目...">
-        <button class="filter-btn active" data-filter="all">全部</button>
-        <button class="filter-btn" data-filter="单选题">单选题</button>
-        <button class="filter-btn" data-filter="多选题">多选题</button>
-        <button class="filter-btn" data-filter="判断题">判断题</button>
-    </div>
+		<!-- 主内容区域：左侧表格 + 右侧数据分析 -->
+		<div class="grid grid-cols-1 xl:grid-cols-6 gap-4 flex-1 min-h-0 px-4 sm:px-6 lg:px-8 pb-4">
+			<!-- 左侧：表格区域（占5列，83.33%，为表格提供更多空间） -->
+			<div class="xl:col-span-5 space-y-4 flex flex-col min-h-0">
 
-    <div id="counter"></div>
+			<div class="bg-white p-3 rounded-xl shadow-sm border border-gray-100">
+				<div class="flex flex-col gap-2">
+					<!-- 第一行：标题 + 副标题 + 导入/重置导入 -->
+					<div class="flex items-center justify-between gap-4 border-b border-gray-100 pb-2">
+						<div class="flex items-center gap-3 flex-shrink-0">
+							<h1 class="text-lg font-normal text-gray-900 flex items-center gap-2 header-title">
+								<i class="fas fa-chart-line text-blue-600"></i> 数据海选看板
+							</h1>
+							<p class="text-sm text-gray-500">eMAG 数据选品 | 联动筛选 | 状态保持复选框</p>
+						</div>
+						<div class="flex items-center gap-2 flex-shrink-0">
+							<div class="relative group">
+								<label for="excelFile" class="cursor-pointer bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow-sm transition-all flex items-center gap-2 text-sm font-medium whitespace-nowrap">
+									<i class="fas fa-cloud-upload-alt"></i> 导入数据<span id="recordCount" class="opacity-90"></span>
+								</label>
+								<input type="file" id="excelFile" accept=".xlsx, .xls" class="hidden" />
+							</div>
+							<button id="wpsImportBtn" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg shadow-sm transition-all flex items-center gap-2 text-sm font-medium whitespace-nowrap">
+								<i class="fas fa-cloud"></i> 从WPS导入
+							</button>
+							<button id="resetImportBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow-sm transition-all flex items-center gap-2 text-sm font-medium whitespace-nowrap">
+								<i class="fas fa-trash-alt"></i> 重置导入
+							</button>
+						</div>
+					</div>
+					<!-- 第二行：冻结列设置/隐藏列设置 + 搜索框 + 筛选项 + 重置按钮（单行） -->
+					<div class="flex items-end gap-3 flex-wrap pt-2">
+						<button id="columnSettingsBtn" class="flex-shrink-0 bg-gray-100 hover:bg-gray-200 text-gray-600 text-sm px-2 py-1.5 rounded-md transition-colors flex items-center gap-1 whitespace-nowrap" style="height: 34px;">
+							<i class="fas fa-columns"></i> 冻结列设置
+						</button>
+						<button id="columnVisibilityBtn" class="flex-shrink-0 bg-gray-100 hover:bg-gray-200 text-gray-600 text-sm px-2 py-1.5 rounded-md transition-colors flex items-center gap-1 whitespace-nowrap" style="height: 34px;">
+							<i class="fas fa-eye-slash"></i> 隐藏列设置
+						</button>
+						<div class="relative flex-shrink-0" style="width: 280px;">
+							<i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+							<input type="text" id="searchInput" disabled placeholder="搜索标题、PNK、链接打标..." class="filter-input w-full pl-10 pr-4 py-1.5 rounded-md" />
+						</div>
+						<div class="flex-shrink-0" style="width: 100px;">
+							<label class="text-xs text-gray-500 block mb-1">最低价格</label>
+							<input type="number" id="filterPriceMin" placeholder="0" class="filter-input w-full px-2 py-1.5 rounded-md text-sm" min="0">
+						</div>
+						<div class="flex-shrink-0" style="width: 100px;">
+							<label class="text-xs text-gray-500 block mb-1">最高价格</label>
+							<input type="number" id="filterPriceMax" placeholder="Max" class="filter-input w-full px-2 py-1.5 rounded-md text-sm" min="0">
+						</div>
+						<div class="flex-shrink-0" style="width: 120px;">
+							<label class="text-xs text-gray-500 block mb-1">星级层级</label>
+							<select id="filterRatingMin" class="filter-input w-full px-2 py-1.5 rounded-md text-sm appearance-none">
+								<option value="0">全部星级</option>
+								<option value="5star">五星级</option>
+								<option value="4star+">四星级以上</option>
+								<option value="3star+">三星级以上</option>
+								<option value="3star-">三星级以下</option>
+							</select>
+						</div>
+						<div class="flex-shrink-0" style="width: 100px;">
+							<label class="text-xs text-gray-500 block mb-1">评论分数(≥值)</label>
+							<input type="number" id="filterScoreMin" placeholder="0" class="filter-input w-full px-2 py-1.5 rounded-md text-sm" min="0">
+						</div>
+						<div class="flex-shrink-0" style="width: 100px;">
+							<label class="text-xs text-gray-500 block mb-1">评价数量(≥值)</label>
+							<input type="number" id="filterReviewsMin" placeholder="0" class="filter-input w-full px-2 py-1.5 rounded-md text-sm" min="0">
+						</div>
+						<div class="flex-shrink-0" style="width: 120px;">
+							<label class="text-xs text-gray-500 block mb-1">推送状态</label>
+							<select id="filterProfitStatus" class="filter-input w-full px-2 py-1.5 rounded-md text-sm appearance-none">
+								<option value="all">全部</option>
+								<option value="none">未推送</option>
+								<option value="pushed">已推送</option>
+								<option value="deleted">已删除</option>
+							</select>
+						</div>
+						<button id="resetFilterBtn" class="flex-shrink-0 bg-gray-100 hover:bg-gray-200 text-gray-600 text-sm px-2 py-1.5 rounded-md transition-colors flex items-center gap-1 whitespace-nowrap" style="height: 34px;">
+							<i class="fas fa-undo-alt"></i> 重置筛选
+						</button>
+						<div class="flex-shrink-0 ml-auto flex items-center gap-2">
+							<button id="resetLayoutBtn" class="flex-shrink-0 bg-gray-100 hover:bg-gray-200 text-gray-600 text-sm px-2 py-1.5 rounded-md transition-colors flex items-center gap-1 whitespace-nowrap" style="height: 34px;">
+								<i class="fas fa-rotate-left"></i> 重置布局
+							</button>
+							<button id="resetSortBtn" class="flex-shrink-0 bg-gray-100 hover:bg-gray-200 text-gray-600 text-sm px-2 py-1.5 rounded-md transition-colors flex items-center gap-1 whitespace-nowrap" style="height: 34px;">
+								<i class="fas fa-sort"></i> 重置排序
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
 
-    <div id="qa-container">
-        <!-- 单选题 Start -->
-        <div class="qa-card" data-type="单选题">
-            <div class="question-header">
-                <p class="question-title">SHEIN平台对于半托管订单的发货时效的要求，哪项是正确的？</p>
-                <span class="question-type">单选题</span>
-            </div>
-            <div class="options">
-                <ul>
-                    <li>A: 发货时效指的是导出地址至物流商揽收包裹的时效</li>
-                    <li>B: 平台对发货时效的要求为7工作日内上传物流单号</li>
-                    <li>C: 平台对发货时效的要求为5工作日内上传物流单号</li>
-                    <li>D: 上传单号后若长时间没有物流轨迹，系统将在14个工作日后自动判定签收</li>
-                </ul>
-            </div>
-            <div class="answer-section">
-                <p><strong>标准答案：</strong><span class="correct-answer">C</span></p>
-                <p><strong>答案解析：</strong>根据履约管理规范，订单需在导出地址后5工作日内上传运单号。</p>
-            </div>
-        </div>
+			<div id="tableCard" class="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden relative flex flex-col" style="min-height: 400px;">
+			<div id="loadingState" class="hidden loading-overlay">
+				<i class="fas fa-circle-notch fa-spin text-3xl text-blue-600 mb-2"></i>
+				<span id="loadingText" class="text-sm font-medium text-gray-700">正在准备...</span>
+				<div class="progress-track"><div id="progressBar" class="progress-bar"></div></div>
+			</div>
 
-        <div class="qa-card" data-type="单选题">
-            <div class="question-header">
-                <p class="question-title">若您有一笔销售金额5美金的订单，在上传物流单号后5工作日仍没有揽收记录，关于以上情况，哪种说法是正确的？</p>
-                <span class="question-type">单选题</span>
-            </div>
-            <div class="options">
-                <ul>
-                    <li>A: 订单将被视作虚假发货，面临10美金的处罚</li>
-                    <li>B: 订单将被视作虚假发货，面临2.5美金的处罚</li>
-                    <li>C: 订单将被视作虚假发货，面临5美金的处罚</li>
-                    <li>D: 上传单号后若长时间没有物流轨迹，系统将在14个工作日后自动判定签收</li>
-                </ul>
-            </div>
-            <div class="answer-section">
-                <p><strong>标准答案：</strong><span class="correct-answer">A</span></p>
-                <p><strong>答案解析：</strong>异常物流轨迹的订单将被判定为虚假发货，每单处罚销售金额的50%，上限200美金，下限10美金。</p>
-            </div>
-        </div>
+			<div id="errorState" class="hidden absolute inset-0 flex flex-col items-center justify-center bg-white z-40 text-red-500 p-8 text-center">
+				<i class="fas fa-exclamation-circle text-4xl mb-3"></i>
+				<p id="errorMsg">发生错误</p>
+			</div>
 
-        <div class="qa-card" data-type="单选题">
-            <div class="question-header">
-                <p class="question-title">若您的店铺上周按时签收率为95%，这周您的一笔订单超过了平台的要求签收时间仍没有完成签收，关于以上情况，哪一项说法是正确的？</p>
-                <span class="question-type">单选题</span>
-            </div>
-            <div class="options">
-                <ul>
-                    <li>A: 每笔订单将面临5美金的处罚</li>
-                    <li>B: 由于店铺上周按时签收率≥95%，本周未按时签收订单的罚款将被豁免</li>
-                    <li>C: 订单从创建到签收时间超过7自然日，则会被视作未按时签收订单</li>
-                    <li>D: 该未按时到货订单将面临店铺扣2分的处罚</li>
-                </ul>
-            </div>
-            <div class="answer-section">
-                <p><strong>标准答案：</strong><span class="correct-answer">B</span></p>
-                <p><strong>答案解析：</strong>店铺上周按时签收率≥95%时，本周未按时到货订单免除罚金；若＜95%，则每单扣除5美金。</p>
-            </div>
-        </div>
+			<div id="emptyState" class="absolute inset-0 flex flex-col items-center justify-center bg-white z-30">
+				<i class="fas fa-circle-notch fa-spin text-4xl text-blue-600 mb-3"></i>
+				<p class="text-base font-medium text-gray-700">等待导入数据...</p>
+				<p class="text-sm text-gray-500 mt-2">请点击"导入数据"按钮选择 Excel 文件</p>
+			</div>
 
-        <div class="qa-card" data-type="单选题">
-            <div class="question-header">
-                <p class="question-title">若您有一笔订单，导出地址后在后台点击确认无货，关于以上情况，哪一项说法是正确的？</p>
-                <span class="question-type">单选题</span>
-            </div>
-            <div class="options">
-                <ul>
-                    <li>A: 订单将被取消，并被视为卖家原因订单取消，扣2分</li>
-                    <li>B: 订单将停留在待发货状态，直至商品补货到货</li>
-                    <li>C: 订单将被取消，但并不会被视为卖家原因订单取消</li>
-                    <li>D: 订单将被取消，并被视为卖家原因订单取消，处罚5美金</li>
-                </ul>
-            </div>
-            <div class="answer-section">
-                <p><strong>标准答案：</strong><span class="correct-answer">D</span></p>
-                <p><strong>答案解析：</strong>无论订单状态如何，点击确认无货后均视为卖家原因取消订单，每单处罚5美金。</p>
-            </div>
-        </div>
+			<div id="realTableWrapper" class="hidden flex-1 min-h-0 flex flex-col">
+				<div class="table-container-wrapper flex-1 min-h-0">
+					<div id="virtualScrollContainer" class="virtual-scroll-container">
+						<div id="virtualContent" style="position: relative;">
+							<table class="apple-table" id="dataTable">
+								<thead id="tableHeader"></thead>
+								<tbody id="tableBody"></tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
 
-        <div class="qa-card" data-type="单选题">
-            <div class="question-header">
-                <p class="question-title">若您的店铺上周按时签收率为90%，这周您的一笔订单超过了平台的要求签收时间仍没有完成签收，关于以上情况，哪一项说法是正确的？</p>
-                <span class="question-type">单选题</span>
-            </div>
-            <div class="options">
-                <ul>
-                    <li>A: 订单从创建到签收时间超过7自然日，则会被视作未按时签收订单</li>
-                    <li>B: 该未按时到货订单将面临5美金的处罚</li>
-                    <li>C: 由于店铺上周按时签收率≥90%，本周未按时签收订单的罚款将被豁免</li>
-                    <li>D: 该未按时到货订单将面临店铺扣2分的处罚</li>
-                </ul>
-            </div>
-            <div class="answer-section">
-                <p><strong>标准答案：</strong><span class="correct-answer">B</span></p>
-                <p><strong>答案解析：</strong>店铺上周按时签收率≥95%时豁免罚款；若＜95%（如90%），则未按时签收订单每单扣除5美金。</p>
-            </div>
-        </div>
+			<div id="noData" class="hidden py-12 text-center text-gray-400">
+				<i class="fas fa-inbox text-4xl mb-2"></i>
+				<p>无匹配数据</p>
+			</div>
+			
+			<!-- 分页组件 -->
+			<div id="paginationContainer" class="border-t border-gray-200"></div>
+		</div>
+			</div>
 
-        <div class="qa-card" data-type="单选题">
-            <div class="question-header">
-                <p class="question-title">若一个自然年内，您的店铺累计出现46单，且虚假发货订单数量为23单，关于以上情况，哪种说法是错误的？</p>
-                <span class="question-type">单选题</span>
-            </div>
-            <div class="options">
-                <ul>
-                    <li>A: 若店铺虚假发货情形严重，将可能面临更严格的处罚</li>
-                    <li>B: 店铺将被延长账期30天</li>
-                    <li>C: 店铺将被禁止提现</li>
-                    <li>D: 23个虚假发货订单将每单处罚销售金额的50%，上限200美金，下限10美金</li>
-                </ul>
-            </div>
-            <div class="answer-section">
-                <p><strong>标准答案：</strong><span class="correct-answer">C</span></p>
-                <p><strong>答案解析：</strong>自然年内虚假发货订单≥20单且占比≥50%时，处罚包括延长账期30天；仅当≥50单且占比≥50%时，才会禁止提现（此处仅23单，未触发）。</p>
-            </div>
-        </div>
-        <!-- 单选题 End -->
+			<!-- 右侧：数据分析区域（占1列，16.67%，缩小到原来的1/2） -->
+			<div class="xl:col-span-1">
+				<div class="bg-white rounded-xl shadow-sm border border-gray-100 p-3 mb-3">
+					<h2 class="text-lg font-normal text-gray-900 mb-3 flex items-center gap-2">
+						<i class="fas fa-chart-pie text-blue-600 text-sm"></i> <span class="text-lg">数据可视化</span>
+					</h2>
+					
+					<!-- 聚合数据展示 -->
+					<div class="grid grid-cols-2 gap-2 mb-3">
+						<div class="bg-gray-50 rounded-lg p-2">
+							<div class="flex items-center justify-between">
+								<div class="flex-1 min-w-0">
+									<p class="text-xs text-gray-500 mb-0.5 truncate">总产品数</p>
+									<p class="text-base font-bold text-gray-900 truncate" id="analytics-total">0</p>
+								</div>
+								<div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0 ml-2">
+									<i class="fas fa-box text-blue-600 text-xs"></i>
+								</div>
+							</div>
+						</div>
+						<div class="bg-gray-50 rounded-lg p-2">
+							<div class="flex items-center justify-between">
+								<div class="flex-1 min-w-0">
+									<p class="text-xs text-gray-500 mb-0.5 truncate">平均价格</p>
+									<p class="text-base font-bold text-gray-900 truncate" id="analytics-avg-price">0</p>
+								</div>
+								<div class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0 ml-2">
+									<i class="fas fa-coins text-green-600 text-xs"></i>
+								</div>
+							</div>
+						</div>
+						<div class="bg-gray-50 rounded-lg p-2">
+							<div class="flex items-center justify-between">
+								<div class="flex-1 min-w-0">
+									<p class="text-xs text-gray-500 mb-0.5 truncate">有评价链接量</p>
+									<p class="text-base font-bold text-gray-900 truncate" id="analytics-avg-rating">0</p>
+								</div>
+								<div class="w-8 h-8 bg-yellow-100 rounded-lg flex items-center justify-center flex-shrink-0 ml-2">
+									<i class="fas fa-comments text-yellow-600 text-xs"></i>
+								</div>
+							</div>
+						</div>
+						<div class="bg-gray-50 rounded-lg p-2">
+							<div class="flex items-center justify-between">
+								<div class="flex-1 min-w-0">
+									<p class="text-xs text-gray-500 mb-0.5 truncate">无评价链接量</p>
+									<p class="text-base font-bold text-gray-900 truncate" id="analytics-avg-discount">0</p>
+								</div>
+								<div class="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center flex-shrink-0 ml-2">
+									<i class="fas fa-link-slash text-red-600 text-xs"></i>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<!-- 价格分布图表 -->
+				<div class="bg-white rounded-xl shadow-sm border border-gray-100 p-3 mb-3">
+					<div class="flex items-center justify-between mb-2">
+						<h3 class="text-xs font-semibold text-gray-900">价格分布</h3>
+						<p class="text-xs text-gray-400">点击筛选</p>
+					</div>
+					<div class="relative" style="height: 180px;">
+						<canvas id="priceChart"></canvas>
+						<!-- 联动更新进度提示 -->
+						<div id="analytics-update-progress" class="hidden absolute inset-0 bg-white bg-opacity-80 flex items-center justify-center z-10">
+							<div class="text-center">
+								<div class="inline-block animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600 mb-2"></div>
+								<p class="text-xs text-gray-600">正在更新图表...</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<!-- 星级分布图表 -->
+				<div class="bg-white rounded-xl shadow-sm border border-gray-100 p-3">
+					<div class="flex items-center justify-between mb-2">
+						<h3 class="text-xs font-semibold text-gray-900">星级分布</h3>
+						<p class="text-xs text-gray-400">点击筛选</p>
+					</div>
+					<div class="relative" style="height: 180px;">
+						<canvas id="ratingChart"></canvas>
+					</div>
+				</div>
+			</div>
+		</div>
+					</div>
+				</div>
+				<!-- 利润测算面板 -->
+				<div class="tabs-panel" data-panel-id="tab-profit-calculator" role="tabpanel" aria-hidden="true">
+					<div class="app-content" id="profitCalculatorContainer">
+						<!-- ProfitCalculator组件将在此渲染 -->
+					</div>
+				</div>
+			</div>
+		</main>
+	</div>
 
-        <!-- 多选题 Start -->
-        <div class="qa-card" data-type="多选题">
-            <div class="question-header">
-                <p class="question-title">若您的店铺上周按时签收率为95%，这周您的一笔订单超过了平台的要求签收时间仍没有完成签收，关于以上情况，哪些说法是正确的？</p>
-                <span class="question-type">多选题</span>
-            </div>
-            <div class="options">
-                <ul>
-                    <li>A: 每笔订单将面临5美金的处罚</li>
-                    <li>B: 由于店铺上周按时签收率≥90%，本周未按时签收订单的罚款将被豁免</li>
-                    <li>C: 由于店铺上周按时签收率≥95%，本周未按时签收订单的罚款将被豁免</li>
-                    <li>D: 若店铺存在大量且占比较大的未按时签收订单，店铺可能面临额外处罚（如商品下架、关闭自履约等）</li>
-                </ul>
-            </div>
-            <div class="answer-section">
-                <p><strong>标准答案：</strong><span class="correct-answer">C, D</span></p>
-                <p><strong>答案解析：</strong>店铺上周按时签收率≥95%时豁免罚款；大量未按时签收订单可能引发额外处罚。</p>
-            </div>
-        </div>
+	<div id="selectionBar" class="selection-bar">
+		<div class="flex items-center gap-2">
+			<div class="bg-blue-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs">
+				<i class="fas fa-check"></i>
+			</div>
+			<span>已选 <span id="selectionCount" class="selection-count">0</span> 条数据</span>
+		</div>
+		<div class="h-4 w-px bg-gray-600 mx-2"></div>
+		<button id="clearSelectionBtn" class="text-xs hover:text-blue-300 transition-colors">取消选择</button>
+		<button id="pushToProfitBtn" class="bg-blue-600 text-white hover:bg-blue-700 px-4 py-1.5 rounded-full text-xs font-semibold transition-colors flex items-center gap-2">
+			<i class="fas fa-calculator"></i> 推送到利润测算
+		</button>
+		<button class="bg-white text-gray-900 hover:bg-gray-100 px-4 py-1.5 rounded-full text-xs font-semibold transition-colors">
+			导出数据
+		</button>
+	</div>
 
-        <div class="qa-card" data-type="多选题">
-            <div class="question-header">
-                <p class="question-title">若您有一笔销售金额20美金的订单，在上传物流单号后5工作日仍没有揽收记录，关于以上情况，哪些说法是正确的？</p>
-                <span class="question-type">多选题</span>
-            </div>
-            <div class="options">
-                <ul>
-                    <li>A: 订单将面临10美金的处罚</li>
-                    <li>B: 上传单号后若长时间没有物流轨迹，应在后台及时发起手动修改物流状态申请</li>
-                    <li>C: 订单将面临5美金的处罚</li>
-                    <li>D: 订单将被视作虚假发货</li>
-                </ul>
-            </div>
-            <div class="answer-section">
-                <p><strong>标准答案：</strong><span class="correct-answer">A, B, D</span></p>
-                <p><strong>答案解析：</strong>异常物流轨迹判定为虚假发货，处罚销售金额的50%（下限10美金）；需及时在后台修改物流状态。</p>
-            </div>
-        </div>
+	<!-- 图片预览灯箱 -->
+	<div id="lightbox" class="lightbox-overlay">
+		<div style="position: absolute; top: 20px; right: 20px; color: white; font-size: 2rem; cursor: pointer;" class="lightbox-close"><i class="fas fa-times"></i></div>
+		<img src="" alt="Preview" id="lightboxImg" class="lightbox-img">
+	</div>
+	
+	<!-- HTML内容查看器 -->
+	<div id="htmlViewer" class="html-viewer-overlay">
+		<div class="html-viewer-container">
+			<div class="html-viewer-header">
+				<h3 id="htmlViewerTitle" class="html-viewer-title">内容预览</h3>
+				<button id="htmlViewerClose" class="html-viewer-close" aria-label="关闭">
+					<i class="fas fa-times"></i>
+				</button>
+			</div>
+			<div id="htmlViewerContent" class="html-viewer-content">
+				<iframe id="htmlViewerIframe" sandbox="allow-same-origin allow-scripts allow-popups allow-forms" style="width: 100%; height: 100%; border: none; display: block;"></iframe>
+			</div>
+		</div>
+	</div>
 
-        <div class="qa-card" data-type="多选题">
-            <div class="question-header">
-                <p class="question-title">若一个自然年内，您的店铺累计出现46单，且虚假发货订单数量为23单，会面临怎样的处罚？</p>
-                <span class="question-type">多选题</span>
-            </div>
-            <div class="options">
-                <ul>
-                    <li>A: 店铺将被清退</li>
-                    <li>B: 23个虚假发货订单将每单处罚销售金额的50%（上限200美金，下限10美金）</li>
-                    <li>C: 店铺将被禁止提现</li>
-                    <li>D: 店铺将被延长账期30天</li>
-                </ul>
-            </div>
-            <div class="answer-section">
-                <p><strong>标准答案：</strong><span class="correct-answer">B, D</span></p>
-                <p><strong>答案解析：</strong>自然年内累计虚假发货订单≥20单且占比≥50%时，处罚每单销售金额50%并延长账期30天；若≥50单且占比≥50%，将额外处罚（如禁止提现、清退等）。</p>
-            </div>
-        </div>
+	<div id="columnModal" class="modal-overlay">
+		<div class="modal-content">
+			<div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center">
+				<h3 class="text-lg font-semibold text-gray-800">冻结列设置</h3>
+				<button id="closeModalBtn" class="text-gray-400 hover:text-gray-600"><i class="fas fa-times"></i></button>
+			</div>
+			<div class="px-6 py-4 max-h-80 overflow-y-auto">
+				<p class="text-xs text-gray-500 mb-3">勾选以冻结列 (Fixed)，拖拽表格表头可排序。</p>
+				<div id="columnListContainer" class="space-y-2"></div>
+			</div>
+			<div class="px-6 py-4 bg-gray-50 flex justify-end gap-3">
+				<button id="cancelColBtn" class="px-4 py-2 text-sm text-gray-600 hover:bg-gray-200 rounded-md transition-colors">取消</button>
+				<button id="saveColBtn" class="px-4 py-2 text-sm bg-blue-600 text-white hover:bg-blue-700 rounded-md shadow-sm transition-colors">保存设置</button>
+			</div>
+		</div>
+	</div>
 
-        <div class="qa-card" data-type="多选题">
-            <div class="question-header">
-                <p class="question-title">若您将空包裹配送给消费者，会面临怎样的处罚？</p>
-                <span class="question-type">多选题</span>
-            </div>
-            <div class="options">
-                <ul>
-                    <li>A: 若及时补发，将不会面临任何处罚</li>
-                    <li>B: 订单将面临销售金额100%的罚金处罚（下限10美金，上限600美金）</li>
-                    <li>C: 订单相关商品将被加入回收站</li>
-                    <li>D: 订单将被视作欺诈发货</li>
-                </ul>
-            </div>
-            <div class="answer-section">
-                <p><strong>标准答案：</strong><span class="correct-answer">B, C, D</span></p>
-                <p><strong>答案解析：</strong>空包裹视为欺诈发货，处罚订单销售金额100%，商品加入回收站，并可能限制店铺权限。</p>
-            </div>
-        </div>
+	<div id="columnVisibilityModal" class="modal-overlay">
+		<div class="modal-content">
+			<div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center">
+				<h3 class="text-lg font-semibold text-gray-800">隐藏列设置</h3>
+				<button id="closeVisibilityModalBtn" class="text-gray-400 hover:text-gray-600"><i class="fas fa-times"></i></button>
+			</div>
+			<div class="px-6 py-4 max-h-80 overflow-y-auto">
+				<p class="text-xs text-gray-500 mb-3">勾选以隐藏列，隐藏的列将不会在表格中显示。</p>
+				<div id="columnVisibilityListContainer" class="space-y-2"></div>
+			</div>
+			<div class="px-6 py-4 bg-gray-50 flex justify-end gap-3">
+				<button id="cancelVisibilityBtn" class="px-4 py-2 text-sm text-gray-600 hover:bg-gray-200 rounded-md transition-colors">取消</button>
+				<button id="saveVisibilityBtn" class="px-4 py-2 text-sm bg-blue-600 text-white hover:bg-blue-700 rounded-md shadow-sm transition-colors">保存设置</button>
+			</div>
+		</div>
+	</div>
 
-        <div class="qa-card" data-type="多选题">
-            <div class="question-header">
-                <p class="question-title">若您的店铺上周按时签收率为90%，这周您的一笔订单超过了平台的要求签收时间仍没有完成签收，关于以上情况，哪些说法是正确的？</p>
-                <span class="question-type">多选题</span>
-            </div>
-            <div class="options">
-                <ul>
-                    <li>A: 每笔订单将面临5美金的处罚</li>
-                    <li>B: 店铺上周按时签收率未达到95%，本周未按时签收订单的将被正常罚款</li>
-                    <li>C: 由于店铺上周按时签收率≥90%，本周未按时签收订单的罚款将被豁免</li>
-                    <li>D: 若店铺存在大量未按时签收订单，可能面临商品下架、关闭自履约等处罚</li>
-                </ul>
-            </div>
-            <div class="answer-section">
-                <p><strong>标准答案：</strong><span class="correct-answer">A, B, D</span></p>
-                <p><strong>答案解析：</strong>按时签收率＜95%时未按时订单每单罚5美金；大量未按时订单可能引发额外处罚。</p>
-            </div>
-        </div>
-
-        <div class="qa-card" data-type="多选题">
-            <div class="question-header">
-                <p class="question-title">若您有一笔订单，导出地址后在后台点击确认无货，则订单状态会如何流转？若会因此面临处罚，将面临怎样的处罚？</p>
-                <span class="question-type">多选题</span>
-            </div>
-            <div class="options">
-                <ul>
-                    <li>A: 订单将被取消，并被视为卖家原因订单取消</li>
-                    <li>B: 确认无货不会面临任何处罚</li>
-                    <li>C: 订单将停留在待发货状态，直至商品补货到货</li>
-                    <li>D: 每笔订单将面临5美金的处罚</li>
-                </ul>
-            </div>
-            <div class="answer-section">
-                <p><strong>标准答案：</strong><span class="correct-answer">A, D</span></p>
-                <p><strong>答案解析：</strong>点击确认无货后订单取消并视为卖家原因，每单处罚5美金。</p>
-            </div>
-        </div>
-        <!-- 多选题 End -->
-
-        <!-- 判断题 Start -->
-        <div class="qa-card" data-type="判断题">
-            <div class="question-header">
-                <p class="question-title">若一个自然年内，您的店铺累计出现60单，且虚假发货订单数量为23单，会面临店铺清退的处罚。</p>
-                <span class="question-type">判断题</span>
-            </div>
-            <div class="options">
-                <ul>
-                    <li>正确</li>
-                    <li>错误</li>
-                </ul>
-            </div>
-            <div class="answer-section">
-                <p><strong>标准答案：</strong><span class="correct-answer">错误</span></p>
-                <p><strong>答案解析：</strong>自然年内累计虚假发货订单≥50单且占比≥50%时才触发清退；此处虚假发货占比为23/60≈38.3%，未达到50%的阈值。</p>
-            </div>
-        </div>
-
-        <div class="qa-card" data-type="判断题">
-            <div class="question-header">
-                <p class="question-title">SHEIN平台对于半托管订单的发货时效没有要求。</p>
-                <span class="question-type">判断题</span>
-            </div>
-            <div class="options">
-                <ul>
-                    <li>正确</li>
-                    <li>错误</li>
-                </ul>
-            </div>
-            <div class="answer-section">
-                <p><strong>标准答案：</strong><span class="correct-answer">错误</span></p>
-                <p><strong>答案解析：</strong>订单需在导出地址后5工作日内发货，超时未发货将取消订单并处罚5美金。</p>
-            </div>
-        </div>
-
-        <div class="qa-card" data-type="判断题">
-            <div class="question-header">
-                <p class="question-title">若您有一笔销售金额20美金的订单，在上传物流单号后5工作日仍没有揽收记录，会面临10美金的处罚。</p>
-                <span class="question-type">判断题</span>
-            </div>
-            <div class="options">
-                <ul>
-                    <li>正确</li>
-                    <li>错误</li>
-                </ul>
-            </div>
-            <div class="answer-section">
-                <p><strong>标准答案：</strong><span class="correct-answer">正确</span></p>
-                <p><strong>答案解析：</strong>异常物流轨迹视为虚假发货，处罚销售金额的50%（下限10美金），20×50%=10美金。</p>
-            </div>
-        </div>
-
-        <div class="qa-card" data-type="判断题">
-            <div class="question-header">
-                <p class="question-title">若您的店铺上周按时签收率为95%，这周您的一笔订单超过了平台的要求签收时间仍没有完成签收，会面临每笔订单5美金的处罚。</p>
-                <span class="question-type">判断题</span>
-            </div>
-            <div class="options">
-                <ul>
-                    <li>正确</li>
-                    <li>错误</li>
-                </ul>
-            </div>
-            <div class="answer-section">
-                <p><strong>标准答案：</strong><span class="correct-answer">错误</span></p>
-                <p><strong>答案解析：</strong>按时签收率≥95%时豁免罚款，不处罚。</p>
-            </div>
-        </div>
-        
-        <div class="qa-card" data-type="多选题">
-            <div class="question-header">
-                <p class="question-title">SHEIN平台对于半托管订单的发货时效的要求是什么？</p>
-                <span class="question-type">多选题</span>
-            </div>
-            <div class="options">
-                <ul>
-                    <li>A: 发货时效指的是导出地址至上传物流单号的时效</li>
-                    <li>B: 上传单号后若长时间没有物流轨迹，应在后台及时发起手动修改物流状态申请</li>
-                    <li>C: 平台对发货时效的要求为5工作日内上传物流单号</li>
-                    <li>D: 平台对发货时效的要求为7工作日内上传物流单号</li>
-                </ul>
-            </div>
-            <div class="answer-section">
-                <p><strong>标准答案：</strong><span class="correct-answer">A, B, C</span></p>
-                <p><strong>答案解析：</strong>D：根据履约管理规范，订单需在导出地址后5工作日内上传运单号。</p>
-            </div>
-        </div>
-        
-        <div class="qa-card" data-type="判断题">
-            <div class="question-header">
-                <p class="question-title">若您有一笔销售金额5美金的订单，在上传物流单号后5工作日仍没有揽收记录，会面临2.5美金的处罚。</p>
-                <span class="question-type">判断题</span>
-            </div>
-            <div class="options">
-                <ul>
-                    <li>正确</li>
-                    <li>错误</li>
-                </ul>
-            </div>
-            <div class="answer-section">
-                <p><strong>标准答案：</strong><span class="correct-answer">错误</span></p>
-                <p><strong>答案解析：</strong>异常物流轨迹的订单将被判定为虚假发货，每单处罚销售金额的50%，上限200美金，下限10美金。</p>
-            </div>
-        </div>
-        <!-- 判断题 End -->
-        
-        <!-- === 新增/替换题目 START === -->
-        
-        <div class="qa-card" data-type="单选题">
-            <div class="question-header">
-                <p class="question-title">若一个自然年内，您的店铺累计出现60单，且虚假发货订单数量为32单，关于以上情况，哪种说法是错误的？</p>
-                <span class="question-type">单选题</span>
-            </div>
-            <div class="options">
-                <ul>
-                    <li>A: 32个虚假发货订单将每单处罚销售金额的50%，上限200美金，下限10美金</li>
-                    <li>B: 店铺将被禁止提现</li>
-                    <li>C: 32个虚假发货订单将每单处罚销售金额的50%，上限150美金，下限10美金</li>
-                    <li>D: 店铺将被延长账期30天</li>
-                </ul>
-            </div>
-            <div class="answer-section">
-                <p><strong>标准答案：</strong><span class="correct-answer">C</span></p>
-                <p><strong>答案解析：</strong>店铺在一个自然年内累计出现20单及以上，且续虚假发货订单占比大等于50%，将面临账期延长的30天的处罚；当店铺在一个自然年内累计出现50单及以上，且虚假发货订单占比大等于50%，将额外面临禁止提现、限制流量、商品下架、限制店铺经营权限、店铺禁用、店铺清退的处罚。</p>
-            </div>
-        </div>
-
-        <!-- === 新增/替换题目 END === -->
-
-    </div>
-</div>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const searchInput = document.getElementById('searchInput');
-    const filterButtons = document.querySelectorAll('.filter-btn');
-    const qaContainer = document.getElementById('qa-container');
-    const qaCards = qaContainer.querySelectorAll('.qa-card');
-    const counter = document.getElementById('counter');
-
-    let currentFilter = 'all';
-
-    function filterAndSearch() {
-        const searchTerm = searchInput.value.toLowerCase();
-        let visibleCount = 0;
-
-        qaCards.forEach(card => {
-            const type = card.getAttribute('data-type');
-            const textContent = card.textContent.toLowerCase();
-            
-            const typeMatch = (currentFilter === 'all' || type === currentFilter);
-            const searchMatch = textContent.includes(searchTerm);
-
-            if (typeMatch && searchMatch) {
-                card.style.display = 'block';
-                visibleCount++;
-            } else {
-                card.style.display = 'none';
-            }
-        });
-        
-        counter.textContent = `共找到 ${visibleCount} / ${qaCards.length} 道题目`;
-    }
-
-    searchInput.addEventListener('input', filterAndSearch);
-
-    filterButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            filterButtons.forEach(btn => btn.classList.remove('active'));
-            button.classList.add('active');
-            currentFilter = button.getAttribute('data-filter');
-            filterAndSearch();
-        });
-    });
-
-    // Initial filter and count
-    filterAndSearch();
-});
-</script>
-
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+	<script type="module" src="./scripts/main.js"></script>
+	<!-- 说明：保持与原版本相同的外部依赖来源与 HTML 结构，逻辑迁移在 JS 模块中完成 -->
+	
+	<!-- 测试脚本（开发环境） -->
+	<script type="module">
+		// 性能测试工具
+		import { batchPerformanceTest } from './scripts/utils/profitPerformanceTest.js';
+		window.profitPerformanceTest = batchPerformanceTest;
+		
+		import { runAllTests } from './scripts/test/profitCalculator.test.js';
+		window.runProfitTests = runAllTests;
+	</script>
+	<div id="custom-tooltip"></div>
 </body>
 </html>
+
+
