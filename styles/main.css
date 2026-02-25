@@ -1,0 +1,301 @@
+:root{
+	--primary:#0071E3;
+	--primary-dark:#005BBA;
+	--text:#1D1D1F;
+	--text-secondary:#5A5A5A;
+	--background:#FFFFFF;
+	--surface:#F5F5F7;
+	--border:#E0E0E0;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{
+	height:100vh;
+	overflow:hidden;
+}
+body{
+	font-family:'SF Pro Text',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+	background-color:var(--background);
+	color:var(--text);
+	line-height:1.5;
+	-webkit-font-smoothing:antialiased;
+}
+.app-shell{height:100vh;display:flex;overflow:hidden;}
+.app-main{flex:1;min-width:0;display:flex;flex-direction:column;min-height:0;overflow:hidden;}
+.app-content{width:100%;max-width:none;flex:1;min-height:0;display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden;}
+.app-sidebar{
+	position:sticky;
+	top:0;
+	height:100vh;
+	width:248px;
+	background:#fff;
+	border-right:1px solid var(--border);
+	z-index:60;
+	display:flex;
+	flex-direction:column;
+}
+.app-sidebar__header{
+	display:flex;
+	align-items:center;
+	justify-content:space-between;
+	padding:16px 14px;
+	border-bottom:1px solid rgba(0,0,0,0.06);
+}
+.app-sidebar__brand{display:flex;align-items:center;gap:10px;}
+.app-sidebar__logo{
+	width:34px;height:34px;border-radius:10px;background:var(--primary);color:#fff;
+	display:flex;align-items:center;justify-content:center;font-weight:700;
+}
+.app-sidebar__title{font-weight:700;color:var(--text);letter-spacing:.2px;}
+.app-sidebar__icon-btn{
+	width:32px;height:32px;border-radius:10px;border:1px solid rgba(0,0,0,0.08);
+	background:#fff;color:#555;display:inline-flex;align-items:center;justify-content:center;
+}
+.app-sidebar__nav{padding:10px 10px 14px;display:flex;flex-direction:column;gap:6px;overflow:auto;}
+.app-sidebar__item{
+	display:flex;align-items:center;gap:10px;
+	padding:10px 12px;border-radius:12px;color:#334155;text-decoration:none;
+	border:1px solid transparent;
+}
+.app-sidebar__item:hover{background:#f8fafc;border-color:rgba(0,0,0,0.05);}
+.app-sidebar__item.active{background:rgba(0,113,227,0.06);border-color:rgba(0,113,227,0.18);color:#0f172a;}
+.app-sidebar__section{padding:12px;border-radius:12px;background:#f5f5f7;border:1px dashed rgba(0,0,0,0.08);margin-top:8px;}
+.app-sidebar__section-title{font-size:12px;font-weight:700;color:#475569;margin-bottom:4px;}
+.app-sidebar__hint{font-size:12px;color:#64748b;line-height:1.4;}
+.app-sidebar__overlay{display:none;}
+@media (max-width: 1023px){
+	.app-shell{display:block;}
+	.app-sidebar{
+		position:fixed;
+		left:0;
+		transform:translateX(-105%);
+		box-shadow:0 20px 40px rgba(0,0,0,0.18);
+		transition:transform .2s ease;
+	}
+	.app-sidebar.open{transform:translateX(0);}
+	.app-sidebar__overlay{
+		position:fixed;inset:0;background:rgba(0,0,0,0.35);z-index:55;
+		opacity:0;pointer-events:none;transition:opacity .2s ease;
+		display:block;
+	}
+	.app-sidebar__overlay.active{opacity:1;pointer-events:auto;}
+	.app-sidebar__icon-btn{display:inline-flex;}
+}
+@media (min-width: 1024px){
+	.app-sidebar__icon-btn{display:none;}
+}
+.table-container-wrapper{container-type:inline-size;width:100%;}
+.virtual-scroll-container{
+	height:60vh;
+	overflow-y:auto;
+	overflow-x:auto;
+	position:relative;
+	will-change:transform;
+	scrollbar-width:thin;
+	scrollbar-color:rgba(0,0,0,0.2) transparent;
+}
+/* 现代化滚动条样式 - Webkit 浏览器 */
+.virtual-scroll-container::-webkit-scrollbar{
+	width:8px;
+	height:8px;
+}
+.virtual-scroll-container::-webkit-scrollbar-track{
+	background:transparent;
+	border-radius:10px;
+}
+.virtual-scroll-container::-webkit-scrollbar-thumb{
+	background:rgba(0,0,0,0.2);
+	border-radius:10px;
+	border:2px solid transparent;
+	background-clip:padding-box;
+	transition:background 0.2s ease;
+}
+.virtual-scroll-container::-webkit-scrollbar-thumb:hover{
+	background:rgba(0,0,0,0.35);
+	background-clip:padding-box;
+}
+.virtual-scroll-container::-webkit-scrollbar-corner{
+	background:transparent;
+}
+.apple-table{
+	border-collapse:separate;
+	border-spacing:0;
+	width:100%;
+	background:#fff;
+	table-layout:fixed;
+}
+.apple-table th{
+	font-weight:700;
+	font-size:.875rem;
+	text-align:center;
+	padding:0;
+	color:#1D1D1F;
+	border-bottom:1px solid var(--border);
+	border-right:1px solid transparent;
+	text-transform:uppercase;
+	background:#fff !important;
+	position:sticky;
+	top:0;
+	z-index:20;
+	user-select:none;
+	height:48px;
+	vertical-align:middle;
+}
+.th-content{
+	display:flex;align-items:center;justify-content:center;
+	padding:12px 16px;height:100%;width:100%;cursor:grab;
+	background:transparent;
+	white-space:nowrap;
+	overflow:hidden;
+	text-overflow:ellipsis;
+}
+.th-content:active{cursor:grabbing;}
+.resizer{
+	display:inline-block;width:6px;height:100%;position:absolute;
+	right:0;top:0;cursor:col-resize;z-index:25;transition:all .2s;
+	background:transparent;
+	border-right:2px solid rgba(0,0,0,0.08);
+}
+.resizer:hover{
+	background:rgba(0,113,227,0.1);
+	border-right-color:var(--primary);
+	border-right-width:3px;
+}
+.resizer.resizing{
+	background:rgba(0,113,227,0.15);
+	border-right-color:var(--primary);
+	border-right-width:3px;
+}
+.sticky-left{
+	position:sticky !important;
+	z-index:30 !important;
+	background:#fff !important;
+	border-right:1px solid rgba(0,0,0,0.05);
+	box-shadow:2px 0 4px rgba(0,0,0,0.05);
+}
+thead .sticky-left{
+	z-index:35 !important;
+	background:#fff !important;
+}
+tbody .sticky-left{
+	z-index:25 !important;
+	background:#fff !important;
+}
+tr:hover .sticky-left{
+	background-color:rgba(0,113,227,0.04) !important;
+	z-index:26 !important;
+}
+thead tr:hover .sticky-left{
+	background-color:#fff !important;
+	z-index:36 !important;
+}
+/* 确保冻结列单元格内容也有背景色 */
+.sticky-left *{
+	background-color:inherit !important;
+}
+.dragging-col{opacity:.4;background:#e5e7eb;}
+.drag-over{border-left:2px solid var(--primary);}
+.apple-table td{
+	padding:10px 16px;border-bottom:1px solid var(--border);
+	font-size:.875rem;color:#1D1D1F;vertical-align:top;
+	min-height:72px;height:auto;overflow:visible;
+	transition:padding .2s;
+	background:#fff;
+}
+/* 确保冻结列td的背景色优先级 */
+.apple-table td.sticky-left{
+	background:#fff !important;
+}
+/* 星级值列允许内容完整显示 */
+.apple-table td[data-key="rating"]{
+	overflow:visible;
+	white-space:normal;
+}
+.apple-table td:not([data-key="title"]){
+	text-align:center;
+}
+.apple-table td[data-key="title"]{
+	text-align:left;
+	white-space:normal;
+	overflow:visible;
+	height:auto;
+}
+@container (max-width:1000px){
+	.apple-table td{padding:8px 10px;font-size:.8rem;}
+	.th-content{padding:8px 10px;}
+	.product-img-container{width:36px !important;height:36px !important;}
+}
+.product-title-cell{
+	white-space:normal;cursor:pointer;
+}
+.lazy-img{opacity:0;transition:opacity .3s ease-in-out;cursor:zoom-in;}
+.lazy-img.loaded{opacity:1;transition:none;}
+.filter-input{
+	background:#F5F5F7;border:1px solid transparent;transition:all .2s;font-size:.85rem;
+}
+.filter-input:focus{background:#fff;border-color:var(--primary);outline:none;box-shadow:0 0 0 2px rgba(0,113,227,.1);}
+.selection-bar{
+	position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(150%);
+	background:rgba(29,29,31,.95);backdrop-filter:blur(10px);
+	color:#fff;padding:12px 24px;border-radius:50px;display:flex;align-items:center;gap:16px;
+	box-shadow:0 10px 30px rgba(0,0,0,.2);z-index:100;transition:transform .3s cubic-bezier(0.175,0.885,0.32,1.275);
+}
+.selection-bar.active{transform:translateX(-50%) translateY(0);}
+.selection-count{font-weight:600;font-feature-settings:"tnum";}
+.row-checkbox{width:16px;height:16px;cursor:pointer;accent-color:var(--primary);}
+.modal-overlay{
+	position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.4);z-index:100;
+	display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s;
+}
+.modal-overlay.active{opacity:1;pointer-events:auto;}
+.modal-content{
+	background:#fff;width:400px;max-width:90%;border-radius:12px;box-shadow:0 20px 40px rgba(0,0,0,.15);
+	transform:scale(.95);transition:transform .2s;overflow:hidden;
+}
+.modal-overlay.active .modal-content{transform:scale(1);}
+.badge-top{background:linear-gradient(135deg,#0071E3 0%,#005BBA 100%);color:#fff;padding:2px 8px;border-radius:4px;font-size:.7rem;display:inline-block;}
+.badge-super{background:linear-gradient(135deg,#00C1D4 0%,#00A3B5 100%);color:#fff;padding:2px 8px;border-radius:4px;font-size:.7rem;display:inline-block;}
+.discount-badge{background:#dc2626;color:#fff;padding:4px 10px;border-radius:6px;font-size:.875rem;font-weight:500;display:inline-block;}
+.star-rating{display:flex;align-items:center;gap:2px;color:#FFD700;}
+.star-rating-container{display:flex;align-items:center;gap:2px;}
+.star-filled,.star-half,.star-empty{
+	width:14px;height:14px;position:relative;flex-shrink:0;
+}
+.star-filled::before{
+	content:'';position:absolute;inset:0;
+	background:linear-gradient(135deg,#FFD700 0%,#FFA500 100%);
+	clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);
+}
+.star-half::before{
+	content:'';position:absolute;inset:0;
+	background:#E5E5E5;
+	clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);
+}
+.star-half::after{
+	content:'';position:absolute;inset:0;
+	background:linear-gradient(135deg,#FFD700 0%,#FFA500 100%);
+	clip-path:polygon(50% 0%,39% 35%,2% 35%,32% 57%,21% 91%,50% 70%,50% 0%);
+}
+.star-empty::before{
+	content:'';position:absolute;inset:0;
+	background:#E5E5E5;
+	clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);
+}
+.star-rating-value{color:#9CA3AF;font-size:.875rem;margin-left:6px;}
+.action-link{color:var(--primary);text-decoration:none;font-weight:500;display:inline-flex;align-items:center;gap:4px;}
+.loading-overlay{
+	position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(255,255,255,.95);
+	display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:50;
+}
+.progress-track{width:200px;height:6px;background:#E0E0E0;margin-top:12px;border-radius:3px;overflow:hidden;}
+.progress-bar{height:100%;background:var(--primary);width:0%;transition:width .2s ease;border-radius:3px;}
+.lightbox-overlay{
+	position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.85);z-index:100;
+	display:flex;justify-content:center;align-items:center;opacity:0;pointer-events:none;transition:opacity .3s ease;
+}
+.lightbox-overlay.active{opacity:1;pointer-events:auto;}
+.lightbox-img{max-width:90%;max-height:90%;border-radius:8px;transform:scale(.95);transition:transform .3s ease;}
+.lightbox-overlay.active .lightbox-img{transform:scale(1);}
+
+/* 6列网格布局支持（用于表格和数据分析区域的宽度分配，表格占83.33%，可视化占16.67%） */
+
+
